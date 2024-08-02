@@ -20,6 +20,7 @@ namespace Pt5Viewer
 
         ScalePresenter scalePresenter;
         StatisticsPresenter statisticsPresenter;
+        GraphPresenter graphPresenter;
 
         public MainForm()
         {
