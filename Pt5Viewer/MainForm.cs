@@ -19,6 +19,7 @@ namespace Pt5Viewer
         PresenterManager presenterManager;
 
         ScalePresenter scalePresenter;
+        StatisticsPresenter statisticsPresenter;
 
         public MainForm()
         {
