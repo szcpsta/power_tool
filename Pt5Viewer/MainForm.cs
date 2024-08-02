@@ -10,15 +10,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Pt5Viewer.Presenters;
+
 namespace Pt5Viewer
 {
     public partial class MainForm : Form
     {
+        PresenterManager presenterManager;
+
+        ScalePresenter scalePresenter;
+
         public MainForm()
         {
             InitializeComponent();
 
             SetTitle();
+
+            presenterManager = new PresenterManager();
         }
 
         private void SetTitle()
@@ -50,6 +58,11 @@ namespace Pt5Viewer
                     return 0;
                 }
             }
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            presenterManager.Start();
         }
     }
 }
