@@ -31,10 +31,12 @@ namespace Pt5Viewer
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.scaleView = new Pt5Viewer.Views.ScaleView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,11 +67,24 @@ namespace Pt5Viewer
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.scaleView);
             this.splitContainer2.Size = new System.Drawing.Size(758, 729);
             this.splitContainer2.SplitterDistance = 529;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
+            // 
+            // scaleView
+            // 
+            this.scaleView.CurrentOffset = "";
+            this.scaleView.Location = new System.Drawing.Point(3, 3);
+            this.scaleView.Name = "scaleView";
+            this.scaleView.Size = new System.Drawing.Size(380, 100);
+            this.scaleView.TabIndex = 0;
+            this.scaleView.TimeOffset = "";
             // 
             // MainForm
             // 
@@ -83,6 +98,7 @@ namespace Pt5Viewer
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -93,6 +109,7 @@ namespace Pt5Viewer
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private Views.ScaleView scaleView;
     }
 }
 

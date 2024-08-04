@@ -8,6 +8,18 @@ namespace Pt5Viewer.Views
 {
     public interface IScaleView
     {
+        void SetTimeUnitComboBoxItems(object[] items);
+
+        void SetTimeUnitsPerTickComboBoxItems(object[] items);
+
+        void SetTimeNumberOfTicksComboBoxItems(object[] items);
+
+        void SetCurrentUnitComboBoxItems(object[] items);
+
+        void SetCurrentUnitsPerTickComboBoxItems(object[] items);
+
+        void SetCurrentNumberOfTicksComboBoxItems(object[] items);
+
         string TimeUnit { get; set; }
 
         string TimeUnitsPerTick { get; set; }

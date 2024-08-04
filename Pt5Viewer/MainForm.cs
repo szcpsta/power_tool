@@ -29,6 +29,9 @@ namespace Pt5Viewer
             SetTitle();
 
             presenterManager = new PresenterManager();
+
+            scalePresenter = new ScalePresenter(scaleView);
+            presenterManager.AddPresenter(scalePresenter);
         }
 
         private void SetTitle()

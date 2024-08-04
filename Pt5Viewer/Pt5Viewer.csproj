@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Constant.cs" />
     <Compile Include="Common\IScaleSync.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -68,6 +69,12 @@
     <Compile Include="Views\IGraphView.cs" />
     <Compile Include="Views\IScaleView.cs" />
     <Compile Include="Views\IStatisticsView.cs" />
+    <Compile Include="Views\ScaleView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\ScaleView.Designer.cs">
+      <DependentUpon>ScaleView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,6 +87,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\ScaleView.resx">
+      <DependentUpon>ScaleView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
