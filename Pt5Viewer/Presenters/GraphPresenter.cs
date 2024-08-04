@@ -47,6 +47,5 @@ namespace Pt5Viewer.Presenters
 
             view.UpdateGraph();
         }
-
     }
 }

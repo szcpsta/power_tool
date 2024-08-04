@@ -66,6 +66,12 @@
     <Compile Include="Presenters\StatisticsPresenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\GraphView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\GraphView.Designer.cs">
+      <DependentUpon>GraphView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\IGraphView.cs" />
     <Compile Include="Views\IScaleView.cs" />
     <Compile Include="Views\IStatisticsView.cs" />
@@ -87,6 +93,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\GraphView.resx">
+      <DependentUpon>GraphView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\ScaleView.resx">
       <DependentUpon>ScaleView.cs</DependentUpon>
     </EmbeddedResource>

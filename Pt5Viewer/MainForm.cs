@@ -19,8 +19,8 @@ namespace Pt5Viewer
         PresenterManager presenterManager;
 
         ScalePresenter scalePresenter;
-        StatisticsPresenter statisticsPresenter;
         GraphPresenter graphPresenter;
+        StatisticsPresenter statisticsPresenter;
 
         public MainForm()
         {
@@ -32,6 +32,9 @@ namespace Pt5Viewer
 
             scalePresenter = new ScalePresenter(scaleView);
             presenterManager.AddPresenter(scalePresenter);
+            
+            graphPresenter = new GraphPresenter(graphView);
+            presenterManager.AddPresenter(graphPresenter);
         }
 
         private void SetTitle()
