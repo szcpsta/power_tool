@@ -77,6 +77,7 @@ namespace Pt5Viewer.Views
             this.textBoxCurrentOffset.Name = "textBoxCurrentOffset";
             this.textBoxCurrentOffset.Size = new System.Drawing.Size(80, 21);
             this.textBoxCurrentOffset.TabIndex = 13;
+            this.textBoxCurrentOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBoxCurrentOffset.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxCurrentOffset_KeyDown);
             // 
             // comboBoxCurrentNumberOfTicks
@@ -151,6 +152,7 @@ namespace Pt5Viewer.Views
             this.textBoxTimeOffset.Name = "textBoxTimeOffset";
             this.textBoxTimeOffset.Size = new System.Drawing.Size(80, 21);
             this.textBoxTimeOffset.TabIndex = 5;
+            this.textBoxTimeOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textBoxTimeOffset.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxTimeOffset_KeyDown);
             // 
             // comboBoxTimeNumberOfTicks

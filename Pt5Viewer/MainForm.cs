@@ -35,6 +35,9 @@ namespace Pt5Viewer
             
             graphPresenter = new GraphPresenter(graphView);
             presenterManager.AddPresenter(graphPresenter);
+
+            statisticsPresenter = new StatisticsPresenter(statisticsView);
+            presenterManager.AddPresenter(statisticsPresenter);
         }
 
         private void SetTitle()

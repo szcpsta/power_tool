@@ -32,10 +32,12 @@ namespace Pt5Viewer
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.scaleView = new Pt5Viewer.Views.ScaleView();
             this.graphView = new Pt5Viewer.Views.GraphView();
+            this.scaleView = new Pt5Viewer.Views.ScaleView();
+            this.statisticsView = new Pt5Viewer.Views.StatisticsView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
@@ -55,8 +57,12 @@ namespace Pt5Viewer
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.statisticsView);
             this.splitContainer1.Size = new System.Drawing.Size(1008, 729);
-            this.splitContainer1.SplitterDistance = 761;
+            this.splitContainer1.SplitterDistance = 767;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
@@ -78,11 +84,28 @@ namespace Pt5Viewer
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.scaleView);
-            this.splitContainer2.Size = new System.Drawing.Size(761, 729);
-            this.splitContainer2.SplitterDistance = 532;
+            this.splitContainer2.Size = new System.Drawing.Size(767, 729);
+            this.splitContainer2.SplitterDistance = 538;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
+            // 
+            // graphView
+            // 
+            this.graphView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphView.IsEnableHZoom = false;
+            this.graphView.IsEnableVZoom = false;
+            this.graphView.Location = new System.Drawing.Point(0, 0);
+            this.graphView.Name = "graphView";
+            this.graphView.ScrollGrace = 0D;
+            this.graphView.ScrollMaxX = 0D;
+            this.graphView.ScrollMaxY = 0D;
+            this.graphView.ScrollMaxY2 = 0D;
+            this.graphView.ScrollMinX = 0D;
+            this.graphView.ScrollMinY = 0D;
+            this.graphView.ScrollMinY2 = 0D;
+            this.graphView.Size = new System.Drawing.Size(763, 534);
+            this.graphView.TabIndex = 0;
             // 
             // scaleView
             // 
@@ -99,22 +122,14 @@ namespace Pt5Viewer
             this.scaleView.TimeUnit = null;
             this.scaleView.TimeUnitsPerTick = null;
             // 
-            // graphView
+            // statisticsView
             // 
-            this.graphView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.graphView.IsEnableHZoom = false;
-            this.graphView.IsEnableVZoom = false;
-            this.graphView.Location = new System.Drawing.Point(0, 0);
-            this.graphView.Name = "graphView";
-            this.graphView.ScrollGrace = 0D;
-            this.graphView.ScrollMaxX = 0D;
-            this.graphView.ScrollMaxY = 0D;
-            this.graphView.ScrollMaxY2 = 0D;
-            this.graphView.ScrollMinX = 0D;
-            this.graphView.ScrollMinY = 0D;
-            this.graphView.ScrollMinY2 = 0D;
-            this.graphView.Size = new System.Drawing.Size(757, 528);
-            this.graphView.TabIndex = 0;
+            this.statisticsView.CurrentUnit = "mA";
+            this.statisticsView.Location = new System.Drawing.Point(4, 10);
+            this.statisticsView.Name = "statisticsView";
+            this.statisticsView.Size = new System.Drawing.Size(230, 150);
+            this.statisticsView.TabIndex = 0;
+            this.statisticsView.TimeUnit = "ms";
             // 
             // MainForm
             // 
@@ -126,6 +141,7 @@ namespace Pt5Viewer
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
@@ -142,6 +158,7 @@ namespace Pt5Viewer
         private System.Windows.Forms.SplitContainer splitContainer2;
         private Views.ScaleView scaleView;
         private Views.GraphView graphView;
+        private Views.StatisticsView statisticsView;
     }
 }
 
