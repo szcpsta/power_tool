@@ -17,6 +17,8 @@ namespace Pt5Viewer.Views
         GraphPane gp;
         TextObj y2AxisTitleObj;
 
+        public event MouseEventHandler TimeOffsetChanged;
+
         public GraphView()
         {
             InitializeComponent();
@@ -82,6 +84,13 @@ namespace Pt5Viewer.Views
 
             // Update
             UpdateGraph();
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            TimeOffsetChanged?.Invoke(this, e);
         }
 
         public void SetXAxisTitle(string title)

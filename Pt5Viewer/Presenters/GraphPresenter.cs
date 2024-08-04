@@ -16,6 +16,12 @@ namespace Pt5Viewer.Presenters
         public GraphPresenter(IGraphView graphView)
         {
             view = graphView;
+
+            view.TimeOffsetChanged += (s, e) =>
+            {
+                double nextOffset = PresenterManager.TimeOffset + (e.Delta / 120 * -PresenterManager.TimeUnitsPerTick);
+                PresenterManager.TimeOffsetChanged(nextOffset);
+            };
         }
 
         public void UpdateTimeScale(string unit, int unitsPerTick, int numberOfTicks)

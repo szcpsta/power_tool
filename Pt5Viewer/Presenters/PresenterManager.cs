@@ -17,27 +17,27 @@ namespace Pt5Viewer.Presenters
 
         private List<IScaleSync> scaleSyncPresenters = new List<IScaleSync>();
 
-        private string timeUnit;
-        private int timeUnitsPerTick;
-        private int timeNumberOfTicks;
-        private double timeOffset;
+        public string TimeUnit { get; private set; }
+        public int TimeUnitsPerTick { get; private set; }
+        public int TimeNumberOfTicks { get; private set; }
+        public double TimeOffset { get; private set; }
 
-        private string currentUnit;
-        private int currentUnitsPerTick;
-        private int currentNumberOfTicks;
-        private double currentOffset;
+        public string CurrentUnit { get; private set; }
+        public int CurrentUnitsPerTick { get; private set; }
+        public int CurrentNumberOfTicks { get; private set; }
+        public double CurrentOffset { get; private set; }
 
         public PresenterManager()
         {
-            timeUnit = "ms";
-            timeUnitsPerTick = 100;
-            timeNumberOfTicks = 10;
-            timeOffset = 0.0;
+            TimeUnit = "ms";
+            TimeUnitsPerTick = 100;
+            TimeNumberOfTicks = 10;
+            TimeOffset = 0.0;
 
-            currentUnit = "mA";
-            currentUnitsPerTick = 20;
-            currentNumberOfTicks = 10;
-            currentOffset = -30.0;
+            CurrentUnit = "mA";
+            CurrentUnitsPerTick = 20;
+            CurrentNumberOfTicks = 10;
+            CurrentOffset = -30.0;
         }
 
         public void Start()
@@ -63,32 +63,38 @@ namespace Pt5Viewer.Presenters
 
         public void TimeScaleChanged(string unit, int unitsPerTick, int numberOfTicks)
         {
-            timeUnit = unit;
-            timeUnitsPerTick = unitsPerTick;
-            timeNumberOfTicks = numberOfTicks;
+            TimeUnit = unit;
+            TimeUnitsPerTick = unitsPerTick;
+            TimeNumberOfTicks = numberOfTicks;
 
             UpdateTimeScale();
         }
 
         public void TimeOffsetChanged(double offset)
         {
-            timeOffset = offset;
+            if (model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks) < offset)
+            {
+                offset = model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks);
+            }
+
+            offset = offset < 0 ? 0 : offset; 
+            TimeOffset = offset;
 
             UpdateTimeOffset();
         }
 
         public void CurrentScaleChanged(string unit, int unitsPerTick, int numberOfTicks)
         {
-            currentUnit = unit;
-            currentUnitsPerTick = unitsPerTick;
-            currentNumberOfTicks = numberOfTicks;
+            CurrentUnit = unit;
+            CurrentUnitsPerTick = unitsPerTick;
+            CurrentNumberOfTicks = numberOfTicks;
 
             UpdateCurrentScale();
         }
 
         public void CurrentOffsetChanged(double offset)
         {
-            currentOffset = offset;
+            CurrentOffset = offset;
 
             UpdateCurrentOffset();
         }
@@ -97,7 +103,7 @@ namespace Pt5Viewer.Presenters
         {
             foreach (var scaleSyncPresenter in scaleSyncPresenters)
             {
-                scaleSyncPresenter.UpdateTimeScale(timeUnit, timeUnitsPerTick, timeNumberOfTicks);
+                scaleSyncPresenter.UpdateTimeScale(TimeUnit, TimeUnitsPerTick, TimeNumberOfTicks);
             }
         }
 
@@ -105,7 +111,7 @@ namespace Pt5Viewer.Presenters
         {
             foreach (var scaleSyncPresenter in scaleSyncPresenters)
             {
-                scaleSyncPresenter.UpdateTimeOffset(timeOffset);
+                scaleSyncPresenter.UpdateTimeOffset(TimeOffset);
             }
         }
 
@@ -113,7 +119,7 @@ namespace Pt5Viewer.Presenters
         {
             foreach (var scaleSyncPresenter in scaleSyncPresenters)
             {
-                scaleSyncPresenter.UpdateCurrentScale(currentUnit, currentUnitsPerTick, currentNumberOfTicks);
+                scaleSyncPresenter.UpdateCurrentScale(CurrentUnit, CurrentUnitsPerTick, CurrentNumberOfTicks);
             }
         }
 
@@ -121,7 +127,7 @@ namespace Pt5Viewer.Presenters
         {
             foreach (var scaleSyncPresenter in scaleSyncPresenters)
             {
-                scaleSyncPresenter.UpdateCurrentOffset(currentOffset);
+                scaleSyncPresenter.UpdateCurrentOffset(CurrentOffset);
             }
         }
     }

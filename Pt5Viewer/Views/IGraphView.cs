@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Pt5Viewer.Views
 {
@@ -21,5 +22,7 @@ namespace Pt5Viewer.Views
         void SetYAxisOffset(double offset);
 
         void UpdateGraph();
+
+        event MouseEventHandler TimeOffsetChanged;
     }
 }
