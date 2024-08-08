@@ -77,7 +77,7 @@ namespace Pt5Viewer.Presenters
                 offset = model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks);
             }
 
-            offset = offset < 0 ? 0 : offset; 
+            offset = offset < 0 ? 0 : offset;
             TimeOffset = offset;
 
             UpdateTimeOffset();

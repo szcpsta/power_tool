@@ -22,6 +22,18 @@ namespace Pt5Viewer.Presenters
                 double nextOffset = PresenterManager.TimeOffset + (e.Delta / 120 * -PresenterManager.TimeUnitsPerTick);
                 PresenterManager.TimeOffsetChanged(nextOffset);
             };
+
+            view.ScaleFormatEventTriggered += (s, e) =>
+            {
+                if (view.IsDisplayInTimeFormat)
+                {
+                    view.XAxisFormattedLabel = $"_{e.Val}";
+                }
+                else
+                {
+                    view.XAxisFormattedLabel = $"{e.Val}";
+                }
+            };
         }
 
         public void UpdateTimeScale(string unit, int unitsPerTick, int numberOfTicks)

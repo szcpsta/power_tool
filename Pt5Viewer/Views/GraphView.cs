@@ -16,8 +16,14 @@ namespace Pt5Viewer.Views
     {
         GraphPane gp;
         TextObj y2AxisTitleObj;
+        ContextMenuStrip contextMenuStrip;
 
         public event MouseEventHandler TimeOffsetChanged;
+        public event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
+
+        public bool IsDisplayInTimeFormat { get; set; }
+
+        public string XAxisFormattedLabel { get; set; }
 
         public GraphView()
         {
@@ -46,6 +52,7 @@ namespace Pt5Viewer.Views
             gp.XAxis.Scale.Mag = 0;
             gp.XAxis.Scale.Format = "0";
             gp.XAxis.Scale.IsSkipFirstLabel = true;
+            gp.XAxis.Scale.IsSkipLastLabel = true;
             gp.XAxis.Scale.FontSpec.Size = 11;
 
             gp.XAxis.MajorGrid.IsVisible = false;
@@ -53,6 +60,8 @@ namespace Pt5Viewer.Views
 
             gp.XAxis.MajorTic.IsOpposite = false;
             gp.XAxis.MinorTic.IsOpposite = false;
+
+            gp.XAxis.ScaleFormatEvent += XAxis_ScaleFormatEvent;
 
             gp.X2Axis.IsVisible = false;
 
@@ -66,7 +75,7 @@ namespace Pt5Viewer.Views
             y2AxisTitleObj = new TextObj("", 1, 1, CoordType.XChartFractionYPaneFraction, AlignH.Left, AlignV.Bottom);
             y2AxisTitleObj.FontSpec = gp.XAxis.Title.FontSpec;
             gp.GraphObjList.Add(y2AxisTitleObj);
-            
+
             gp.Y2Axis.Scale.Mag = 0;
             gp.Y2Axis.Scale.FontSpec.Size = 11;
 
@@ -82,15 +91,26 @@ namespace Pt5Viewer.Views
             gp.Y2Axis.MinorTic.IsInside = false;
             gp.Y2Axis.MinorTic.IsOutside = false;
 
+            // ContextMenuStrip
+            contextMenuStrip = new ContextMenuStrip();
+            ToolStripMenuItem displayInTimeFormatItem = new ToolStripMenuItem("Display in Time Format");
+            displayInTimeFormatItem.CheckOnClick = true;
+            displayInTimeFormatItem.Click += (s, e) => {
+                IsDisplayInTimeFormat = displayInTimeFormatItem.Checked;
+                UpdateGraph();
+            };
+            contextMenuStrip.Items.Add(displayInTimeFormatItem);
+            ContextMenuStrip = contextMenuStrip;
+
             // Update
             UpdateGraph();
         }
 
-        protected override void OnMouseWheel(MouseEventArgs e)
+        private string XAxis_ScaleFormatEvent(GraphPane pane, Axis axis, double val, int index)
         {
-            base.OnMouseWheel(e);
+            ScaleFormatEventTriggered?.Invoke(this, new ScaleFormatEventArgs(pane, axis, val, index));
 
-            TimeOffsetChanged?.Invoke(this, e);
+            return XAxisFormattedLabel;
         }
 
         public void SetXAxisTitle(string title)
@@ -137,6 +157,29 @@ namespace Pt5Viewer.Views
         {
             AxisChange();
             Invalidate();
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            TimeOffsetChanged?.Invoke(this, e);
+        }
+    }
+
+    public class ScaleFormatEventArgs : EventArgs
+    {
+        public GraphPane Pane { get; }
+        public Axis Axis { get; }
+        public double Val { get; }
+        public int Index { get; }
+
+        public ScaleFormatEventArgs(GraphPane pane, Axis axis, double val, int index)
+        {
+            Pane = pane;
+            Axis = axis;
+            Val = val;
+            Index = index;
         }
     }
 }

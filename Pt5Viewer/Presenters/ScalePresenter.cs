@@ -16,11 +16,11 @@ namespace Pt5Viewer.Presenters
         public ScalePresenter(IScaleView scaleView)
         {
             view = scaleView;
-            
+
             view.SetTimeUnitComboBoxItems(Constant.TimeUnitList.ToArray());
             view.SetTimeUnitsPerTickComboBoxItems(Constant.TimeUnitsPerTickList.ToArray());
             view.SetTimeNumberOfTicksComboBoxItems(Constant.TimeNumberOfTicksList.ToArray());
-            
+
             view.SetCurrentUnitComboBoxItems(Constant.CurrentUnitList.ToArray());
             view.SetCurrentUnitsPerTickComboBoxItems(Constant.CurrentUnitsPerTickList.ToArray());
             view.SetCurrentNumberOfTicksComboBoxItems(Constant.CurrentNumberOfTicksList.ToArray());
@@ -28,10 +28,10 @@ namespace Pt5Viewer.Presenters
             // OnTimeScaleChanged
             view.TimeScaleChanged += (s, e) =>
             {
-                if (Constant.TimeUnitList.Contains(view.TimeUnit) == false) return; 
-                if (Constant.TimeUnitsPerTickList.Contains(view.TimeUnitsPerTick) == false) return; 
+                if (Constant.TimeUnitList.Contains(view.TimeUnit) == false) return;
+                if (Constant.TimeUnitsPerTickList.Contains(view.TimeUnitsPerTick) == false) return;
                 if (Constant.TimeNumberOfTicksList.Contains(view.TimeNumberOfTicks) == false) return;
-                
+
                 string unit = view.TimeUnit;
                 int unitsPerTick = int.Parse(view.TimeUnitsPerTick);
                 int numberOfTicks = int.Parse(view.TimeNumberOfTicks);

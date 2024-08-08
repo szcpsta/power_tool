@@ -8,7 +8,8 @@ namespace Pt5Viewer.Models
 {
     public class Pt5Model
     {
-        //public double TimeScaleMax = 60_000_000_000;
-        public double TimeScaleMax = 6_000;
+        public double TimeScaleMax = 60_000;    // s
+
+        public DateTime CaptureDate = DateTime.Now;
     }
 }

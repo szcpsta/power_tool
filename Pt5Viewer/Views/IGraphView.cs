@@ -24,5 +24,12 @@ namespace Pt5Viewer.Views
         void UpdateGraph();
 
         event MouseEventHandler TimeOffsetChanged;
+
+        event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
+
+        bool IsDisplayInTimeFormat { get; set; }
+
+        string XAxisFormattedLabel { get; set; }
+
     }
 }
