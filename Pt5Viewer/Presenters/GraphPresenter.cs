@@ -20,7 +20,7 @@ namespace Pt5Viewer.Presenters
 
             view.TimeOffsetChanged += (s, e) =>
             {
-                double nextOffset = PresenterManager.TimeOffset + (e.Delta / 120 * -(int)PresenterManager.TimeUnitsPerTick);
+                double nextOffset = PresenterManager.TimeOffset + (e.Delta / 120 * -(int)PresenterManager.TimeUnitsPerTick / PresenterManager.TimeConversionFactor);
                 PresenterManager.TimeOffsetChanged(nextOffset);
             };
 
@@ -32,7 +32,7 @@ namespace Pt5Viewer.Presenters
                 }
                 else
                 {
-                    view.XAxisFormattedLabel = $"{e.Val}";
+                    view.XAxisFormattedLabel = $"{e.Val * PresenterManager.TimeConversionFactor}";
                 }
             };
         }
@@ -40,7 +40,7 @@ namespace Pt5Viewer.Presenters
         public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
         {
             view.SetXAxisTitle($"Time({Util.GetEnumDescription(unit)})");
-            view.SetXAxisScale((int)unitsPerTick, (int)numberOfTicks);
+            view.SetXAxisScale((int)unitsPerTick / PresenterManager.TimeConversionFactor, (int)numberOfTicks);
 
             view.UpdateGraph();
         }

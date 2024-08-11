@@ -25,6 +25,15 @@ namespace Pt5Viewer.Presenters
 
         public double TimeConversionFactor;
 
+        private Dictionary<TimeUnitEnum, double> TimeConversionFactors = new Dictionary<TimeUnitEnum, double>
+        {
+            { TimeUnitEnum.Microsecond, 1_000_000.0 },
+            { TimeUnitEnum.Millisecond, 1_000.0 },
+            { TimeUnitEnum.Second, 1.0 },
+            { TimeUnitEnum.Minute, 1 / 60.0 },
+            { TimeUnitEnum.Hour, 1 / 3_600.0 },
+        };
+
         public string CurrentUnit { get; private set; }
         public double CurrentUnitsPerTick { get; private set; }
         public int CurrentNumberOfTicks { get; private set; }
@@ -70,15 +79,18 @@ namespace Pt5Viewer.Presenters
             TimeUnitsPerTick = unitsPerTick;
             TimeNumberOfTicks = numberOfTicks;
 
+            TimeConversionFactor = TimeConversionFactors[TimeUnit];
+
             UpdateTimeScale();
         }
 
         public void TimeOffsetChanged(double offset)
         {
-            //if (model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks) < offset)
-            //{
-            //    offset = model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks);
-            //}
+            double delta = (int)TimeUnitsPerTick * (int)TimeNumberOfTicks / TimeConversionFactor;
+            if (model.TimeScaleMax - delta < offset)
+            {
+                offset = model.TimeScaleMax - delta;
+            }
 
             offset = offset < 0 ? 0 : offset;
             TimeOffset = offset;

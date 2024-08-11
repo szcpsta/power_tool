@@ -87,11 +87,13 @@ namespace Pt5Viewer.Presenters
             view.TimeUnit = unit;
             view.TimeUnitsPerTick = unitsPerTick;
             view.TimeNumberOfTicks = numberOfTicks;
+
+            UpdateTimeOffset(PresenterManager.TimeOffset);
         }
 
         public void UpdateTimeOffset(double offset)
         {
-            view.TimeOffset = offset.ToString("F2");
+            view.TimeOffset = (offset * PresenterManager.TimeConversionFactor).ToString("F2");
         }
 
         public void UpdateCurrentScale(string unit, double unitsPerTick, int numberOfTicks)
