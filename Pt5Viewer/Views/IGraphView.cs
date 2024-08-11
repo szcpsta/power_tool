@@ -11,13 +11,13 @@ namespace Pt5Viewer.Views
     {
         void SetXAxisTitle(string title);
 
-        void SetXAxisScale(int unitsPerTick, int numberOfTicks);
+        void SetXAxisScale(double unitsPerTick, int numberOfTicks);
 
         void SetXAxisOffset(double offset);
 
         void SetYAxisTitle(string title);
 
-        void SetYAxisScale(int unitsPerTick, int numberOfTicks);
+        void SetYAxisScale(double unitsPerTick, int numberOfTicks);
 
         void SetYAxisOffset(double offset);
 

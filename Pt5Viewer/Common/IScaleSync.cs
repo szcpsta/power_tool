@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Pt5Viewer.Enums;
+
 namespace Pt5Viewer.Common
 {
     public interface IScaleSync
     {
-        void UpdateTimeScale(string unit, int unitsPerTick, int numberOfTicks);
+        void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks);
 
         void UpdateTimeOffset(double offset);
 
-        void UpdateCurrentScale(string unit, int unitsPerTick, int numberOfTicks);
+        void UpdateCurrentScale(string unit, double unitsPerTick, int numberOfTicks);
 
         void UpdateCurrentOffset(double offset);
     }

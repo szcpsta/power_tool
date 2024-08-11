@@ -4,15 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Pt5Viewer.Enums;
+
 namespace Pt5Viewer.Views
 {
     public interface IScaleView
     {
-        void SetTimeUnitComboBoxItems(object[] items);
+        void SetTimeUnitComboBoxItems(IEnumerable<object> items);
 
-        void SetTimeUnitsPerTickComboBoxItems(object[] items);
+        void SetTimeUnitsPerTickComboBoxItems(IEnumerable<object> items);
 
-        void SetTimeNumberOfTicksComboBoxItems(object[] items);
+        void SetTimeNumberOfTicksComboBoxItems(IEnumerable<object> items);
 
         void SetCurrentUnitComboBoxItems(object[] items);
 
@@ -20,11 +22,11 @@ namespace Pt5Viewer.Views
 
         void SetCurrentNumberOfTicksComboBoxItems(object[] items);
 
-        string TimeUnit { get; set; }
+        TimeUnitEnum TimeUnit { get; set; }
 
-        string TimeUnitsPerTick { get; set; }
+        TimeUnitsPerTickEnum TimeUnitsPerTick { get; set; }
 
-        string TimeNumberOfTicks { get; set; }
+        TimeNumberOfTicksEnum TimeNumberOfTicks { get; set; }
 
         string TimeOffset { get; set; }
 

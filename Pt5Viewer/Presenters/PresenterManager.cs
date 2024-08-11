@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Pt5Viewer.Common;
+using Pt5Viewer.Enums;
 using Pt5Viewer.Models;
 
 namespace Pt5Viewer.Presenters
@@ -17,21 +18,23 @@ namespace Pt5Viewer.Presenters
 
         private List<IScaleSync> scaleSyncPresenters = new List<IScaleSync>();
 
-        public string TimeUnit { get; private set; }
-        public int TimeUnitsPerTick { get; private set; }
-        public int TimeNumberOfTicks { get; private set; }
+        public TimeUnitEnum TimeUnit { get; private set; }
+        public TimeUnitsPerTickEnum TimeUnitsPerTick { get; private set; }
+        public TimeNumberOfTicksEnum TimeNumberOfTicks { get; private set; }
         public double TimeOffset { get; private set; }
 
+        public double TimeConversionFactor;
+
         public string CurrentUnit { get; private set; }
-        public int CurrentUnitsPerTick { get; private set; }
+        public double CurrentUnitsPerTick { get; private set; }
         public int CurrentNumberOfTicks { get; private set; }
         public double CurrentOffset { get; private set; }
 
         public PresenterManager()
         {
-            TimeUnit = "ms";
-            TimeUnitsPerTick = 100;
-            TimeNumberOfTicks = 10;
+            TimeUnit = TimeUnitEnum.Millisecond;
+            TimeUnitsPerTick = TimeUnitsPerTickEnum.Hundred;
+            TimeNumberOfTicks = TimeNumberOfTicksEnum.Ten;
             TimeOffset = 0.0;
 
             CurrentUnit = "mA";
@@ -61,7 +64,7 @@ namespace Pt5Viewer.Presenters
             presenters.Add(presenter);
         }
 
-        public void TimeScaleChanged(string unit, int unitsPerTick, int numberOfTicks)
+        public void TimeScaleChanged(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
         {
             TimeUnit = unit;
             TimeUnitsPerTick = unitsPerTick;
@@ -72,10 +75,10 @@ namespace Pt5Viewer.Presenters
 
         public void TimeOffsetChanged(double offset)
         {
-            if (model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks) < offset)
-            {
-                offset = model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks);
-            }
+            //if (model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks) < offset)
+            //{
+            //    offset = model.TimeScaleMax - (TimeUnitsPerTick * TimeNumberOfTicks);
+            //}
 
             offset = offset < 0 ? 0 : offset;
             TimeOffset = offset;
@@ -83,7 +86,7 @@ namespace Pt5Viewer.Presenters
             UpdateTimeOffset();
         }
 
-        public void CurrentScaleChanged(string unit, int unitsPerTick, int numberOfTicks)
+        public void CurrentScaleChanged(string unit, double unitsPerTick, int numberOfTicks)
         {
             CurrentUnit = unit;
             CurrentUnitsPerTick = unitsPerTick;

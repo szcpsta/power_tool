@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Pt5Viewer.Common;
+using Pt5Viewer.Enums;
 using Pt5Viewer.Views;
 
 namespace Pt5Viewer.Presenters
@@ -18,9 +19,9 @@ namespace Pt5Viewer.Presenters
             view = statisticsView;
         }
 
-        public void UpdateTimeScale(string unit, int unitsPerTick, int numberOfTicks)
+        public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
         {
-            view.TimeUnit = unit;
+            view.TimeUnit = Util.GetEnumDescription(unit);
         }
 
         public void UpdateTimeOffset(double offset)
@@ -28,7 +29,7 @@ namespace Pt5Viewer.Presenters
             //throw new NotImplementedException();
         }
 
-        public void UpdateCurrentScale(string unit, int unitsPerTick, int numberOfTicks)
+        public void UpdateCurrentScale(string unit, double unitsPerTick, int numberOfTicks)
         {
             view.CurrentUnit = unit;
         }

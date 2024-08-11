@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Pt5Viewer.Common;
+using Pt5Viewer.Enums;
 using Pt5Viewer.Views;
 
 namespace Pt5Viewer.Presenters
@@ -17,9 +18,20 @@ namespace Pt5Viewer.Presenters
         {
             view = scaleView;
 
-            view.SetTimeUnitComboBoxItems(Constant.TimeUnitList.ToArray());
-            view.SetTimeUnitsPerTickComboBoxItems(Constant.TimeUnitsPerTickList.ToArray());
-            view.SetTimeNumberOfTicksComboBoxItems(Constant.TimeNumberOfTicksList.ToArray());
+            view.SetTimeUnitComboBoxItems(Enum.GetValues(typeof(TimeUnitEnum))
+                                                        .Cast<TimeUnitEnum>()
+                                                        .Select(e => new { Value = e, Description = Util.GetEnumDescription(e) })
+                                                        .ToList());
+
+            view.SetTimeUnitsPerTickComboBoxItems(Enum.GetValues(typeof(TimeUnitsPerTickEnum))
+                                                        .Cast<TimeUnitsPerTickEnum>()
+                                                        .Select(e => new { Value = e, Description = Util.GetEnumDescription(e) })
+                                                        .ToList());
+
+            view.SetTimeNumberOfTicksComboBoxItems(Enum.GetValues(typeof(TimeNumberOfTicksEnum))
+                                                        .Cast<TimeNumberOfTicksEnum>()
+                                                        .Select(e => new { Value = e, Description = Util.GetEnumDescription(e) })
+                                                        .ToList());
 
             view.SetCurrentUnitComboBoxItems(Constant.CurrentUnitList.ToArray());
             view.SetCurrentUnitsPerTickComboBoxItems(Constant.CurrentUnitsPerTickList.ToArray());
@@ -28,13 +40,9 @@ namespace Pt5Viewer.Presenters
             // OnTimeScaleChanged
             view.TimeScaleChanged += (s, e) =>
             {
-                if (Constant.TimeUnitList.Contains(view.TimeUnit) == false) return;
-                if (Constant.TimeUnitsPerTickList.Contains(view.TimeUnitsPerTick) == false) return;
-                if (Constant.TimeNumberOfTicksList.Contains(view.TimeNumberOfTicks) == false) return;
-
-                string unit = view.TimeUnit;
-                int unitsPerTick = int.Parse(view.TimeUnitsPerTick);
-                int numberOfTicks = int.Parse(view.TimeNumberOfTicks);
+                TimeUnitEnum unit = view.TimeUnit;
+                TimeUnitsPerTickEnum unitsPerTick = view.TimeUnitsPerTick;
+                TimeNumberOfTicksEnum numberOfTicks = view.TimeNumberOfTicks;
 
                 PresenterManager.TimeScaleChanged(unit, unitsPerTick, numberOfTicks);
             };
@@ -74,11 +82,11 @@ namespace Pt5Viewer.Presenters
             };
         }
 
-        public void UpdateTimeScale(string unit, int unitsPerTick, int numberOfTicks)
+        public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
         {
             view.TimeUnit = unit;
-            view.TimeUnitsPerTick = unitsPerTick.ToString();
-            view.TimeNumberOfTicks = numberOfTicks.ToString();
+            view.TimeUnitsPerTick = unitsPerTick;
+            view.TimeNumberOfTicks = numberOfTicks;
         }
 
         public void UpdateTimeOffset(double offset)
@@ -86,10 +94,10 @@ namespace Pt5Viewer.Presenters
             view.TimeOffset = offset.ToString("F2");
         }
 
-        public void UpdateCurrentScale(string unit, int unitsPerTick, int numberOfTicks)
+        public void UpdateCurrentScale(string unit, double unitsPerTick, int numberOfTicks)
         {
             view.CurrentUnit = unit;
-            view.CurrentUnitsPerTick = unitsPerTick.ToString();
+            view.CurrentUnitsPerTick = (unitsPerTick * PresenterManager.TimeConversionFactor).ToString();
             view.CurrentNumberOfTicks = numberOfTicks.ToString();
         }
 

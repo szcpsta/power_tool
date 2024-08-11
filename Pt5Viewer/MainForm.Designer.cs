@@ -24,7 +24,7 @@ namespace Pt5Viewer
         #region Windows Form 디자이너에서 생성한 코드
 
         /// <summary>
-        /// 디자이너 지원에 필요한 메서드입니다. 
+        /// 디자이너 지원에 필요한 메서드입니다.
         /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent()
@@ -44,31 +44,31 @@ namespace Pt5Viewer
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // splitContainer1
-            // 
+            //
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
-            // 
+            //
             // splitContainer1.Panel1
-            // 
+            //
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
-            // 
+            //
             // splitContainer1.Panel2
-            // 
+            //
             this.splitContainer1.Panel2.Controls.Add(this.statisticsView);
             this.splitContainer1.Size = new System.Drawing.Size(1008, 729);
             this.splitContainer1.SplitterDistance = 767;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
-            // 
+            //
             // splitContainer2
-            // 
+            //
             this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
@@ -76,22 +76,22 @@ namespace Pt5Viewer
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
+            //
             // splitContainer2.Panel1
-            // 
+            //
             this.splitContainer2.Panel1.Controls.Add(this.graphView);
-            // 
+            //
             // splitContainer2.Panel2
-            // 
+            //
             this.splitContainer2.Panel2.Controls.Add(this.scaleView);
             this.splitContainer2.Size = new System.Drawing.Size(767, 729);
             this.splitContainer2.SplitterDistance = 538;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
-            // 
+            //
             // graphView
-            // 
+            //
             this.graphView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphView.IsEnableHZoom = false;
             this.graphView.IsEnableVZoom = false;
@@ -106,9 +106,9 @@ namespace Pt5Viewer
             this.graphView.ScrollMinY2 = 0D;
             this.graphView.Size = new System.Drawing.Size(763, 534);
             this.graphView.TabIndex = 0;
-            // 
+            //
             // scaleView
-            // 
+            //
             this.scaleView.CurrentNumberOfTicks = null;
             this.scaleView.CurrentOffset = "";
             this.scaleView.CurrentUnit = null;
@@ -117,22 +117,18 @@ namespace Pt5Viewer
             this.scaleView.Name = "scaleView";
             this.scaleView.Size = new System.Drawing.Size(380, 100);
             this.scaleView.TabIndex = 0;
-            this.scaleView.TimeNumberOfTicks = null;
-            this.scaleView.TimeOffset = "";
-            this.scaleView.TimeUnit = null;
-            this.scaleView.TimeUnitsPerTick = null;
-            // 
+            //
             // statisticsView
-            // 
+            //
             this.statisticsView.CurrentUnit = "mA";
             this.statisticsView.Location = new System.Drawing.Point(4, 10);
             this.statisticsView.Name = "statisticsView";
             this.statisticsView.Size = new System.Drawing.Size(230, 150);
             this.statisticsView.TabIndex = 0;
             this.statisticsView.TimeUnit = "ms";
-            // 
+            //
             // MainForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);

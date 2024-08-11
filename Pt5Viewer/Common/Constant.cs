@@ -14,20 +14,12 @@ namespace Pt5Viewer.Common
         public static readonly string LogDirectory;
         public static readonly string ProfileDirectory;
 
-        public static readonly List<string> TimeUnitList;
-        public static readonly List<string> TimeUnitsPerTickList;
-        public static readonly List<string> TimeNumberOfTicksList;
-
         public static readonly List<string> CurrentUnitList;
         public static readonly List<string> CurrentUnitsPerTickList;
         public static readonly List<string> CurrentNumberOfTicksList;
 
         static Constant()
         {
-            TimeUnitList = new List<string> { "s", "ms", "us", "min", "hr" };
-            TimeUnitsPerTickList = new List<string> { "1", "2", "5", "10", "20", "40", "50", "100" };
-            TimeNumberOfTicksList = new List<string> { "2", "4", "5", "10" };
-
             CurrentUnitList = new List<string> { "A", "mA", "uA" };
             CurrentUnitsPerTickList = new List<string> { "1", "2", "5", "10", "20", "50", "100", "200", "500" };
             CurrentNumberOfTicksList = new List<string> { "2", "4", "5", "10", "20" };

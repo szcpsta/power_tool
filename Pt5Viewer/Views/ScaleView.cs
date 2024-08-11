@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Pt5Viewer.Enums;
+
 namespace Pt5Viewer.Views
 {
     public partial class ScaleView : UserControl, IScaleView
@@ -17,22 +19,22 @@ namespace Pt5Viewer.Views
             InitializeComponent();
         }
 
-        public string TimeUnit
+        public TimeUnitEnum TimeUnit
         {
-            get => comboBoxTimeUnit.SelectedItem?.ToString();
-            set => comboBoxTimeUnit.SelectedItem = value;
+            get => (TimeUnitEnum)comboBoxTimeUnit.SelectedValue;
+            set => comboBoxTimeUnit.SelectedValue = value;
         }
 
-        public string TimeUnitsPerTick
+        public TimeUnitsPerTickEnum TimeUnitsPerTick
         {
-            get => comboBoxTimeUnitsPerTick.SelectedItem?.ToString();
-            set => comboBoxTimeUnitsPerTick.SelectedItem = value;
+            get => (TimeUnitsPerTickEnum)comboBoxTimeUnitsPerTick.SelectedValue;
+            set => comboBoxTimeUnitsPerTick.SelectedValue = value;
         }
 
-        public string TimeNumberOfTicks
+        public TimeNumberOfTicksEnum TimeNumberOfTicks
         {
-            get => comboBoxTimeNumberOfTicks.SelectedItem?.ToString();
-            set => comboBoxTimeNumberOfTicks.SelectedItem = value;
+            get => (TimeNumberOfTicksEnum)comboBoxTimeNumberOfTicks.SelectedValue;
+            set => comboBoxTimeNumberOfTicks.SelectedValue = value;
         }
 
         public string TimeOffset
@@ -70,19 +72,25 @@ namespace Pt5Viewer.Views
         public event EventHandler CurrentScaleChanged;
         public event EventHandler CurrentOffsetChanged;
 
-        public void SetTimeUnitComboBoxItems(object[] items)
+        public void SetTimeUnitComboBoxItems(IEnumerable<object> items)
         {
-            comboBoxTimeUnit.Items.AddRange(items);
+            comboBoxTimeUnit.DataSource = items;
+            comboBoxTimeUnit.DisplayMember = "Description";
+            comboBoxTimeUnit.ValueMember = "Value";
         }
 
-        public void SetTimeUnitsPerTickComboBoxItems(object[] items)
+        public void SetTimeUnitsPerTickComboBoxItems(IEnumerable<object> items)
         {
-            comboBoxTimeUnitsPerTick.Items.AddRange(items);
+            comboBoxTimeUnitsPerTick.DataSource = items;
+            comboBoxTimeUnitsPerTick.DisplayMember = "Description";
+            comboBoxTimeUnitsPerTick.ValueMember = "Value";
         }
 
-        public void SetTimeNumberOfTicksComboBoxItems(object[] items)
+        public void SetTimeNumberOfTicksComboBoxItems(IEnumerable<object> items)
         {
-            comboBoxTimeNumberOfTicks.Items.AddRange(items);
+            comboBoxTimeNumberOfTicks.DataSource = items;
+            comboBoxTimeNumberOfTicks.DisplayMember = "Description";
+            comboBoxTimeNumberOfTicks.ValueMember = "Value";
         }
 
         public void SetCurrentUnitComboBoxItems(object[] items)

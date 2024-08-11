@@ -118,7 +118,7 @@ namespace Pt5Viewer.Views
             gp.XAxis.Title.Text = title;
         }
 
-        public void SetXAxisScale(int unitsPerTick, int numberOfTicks)
+        public void SetXAxisScale(double unitsPerTick, int numberOfTicks)
         {
             gp.XAxis.Scale.Max = gp.XAxis.Scale.Min + unitsPerTick * numberOfTicks;
 
@@ -138,7 +138,7 @@ namespace Pt5Viewer.Views
             y2AxisTitleObj.Text = title;
         }
 
-        public void SetYAxisScale(int unitsPerTick, int numberOfTicks)
+        public void SetYAxisScale(double unitsPerTick, int numberOfTicks)
         {
             gp.Y2Axis.Scale.Max = gp.Y2Axis.Scale.Min + unitsPerTick * numberOfTicks;
 
