@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,10 +51,21 @@ namespace Pt5Viewer.Presenters
             // OnTimeOffsetChanged
             view.TimeOffsetChanged += (s, e) =>
             {
-                double offset;
-                if (double.TryParse(view.TimeOffset, out offset) == true)
+                if (PresenterManager.IsDisplayInTimeFormat == true)
                 {
-                    PresenterManager.TimeOffsetChanged(offset);
+                    DateTime datetime;
+                    if (DateTime.TryParseExact(view.TimeOffset, "HH:mm:ss.ffff", CultureInfo.InvariantCulture, DateTimeStyles.None, out datetime) == true)
+                    {
+                        PresenterManager.TimeOffsetChanged(PresenterManager.GetTimestamp(datetime));
+                    }
+                }
+                else
+                {
+                    double offset;
+                    if (double.TryParse(view.TimeOffset, out offset) == true)
+                    {
+                        PresenterManager.TimeOffsetChanged(offset / PresenterManager.TimeConversionFactor);
+                    }
                 }
             };
 
@@ -93,7 +105,14 @@ namespace Pt5Viewer.Presenters
 
         public void UpdateTimeOffset(double offset)
         {
-            view.TimeOffset = (offset * PresenterManager.TimeConversionFactor).ToString("F2");
+            if (PresenterManager.IsDisplayInTimeFormat == true)
+            {
+                view.TimeOffset = $"{PresenterManager.GetDateTime(offset).ToString("HH:mm:ss.ffff")}";
+            }
+            else
+            {
+                view.TimeOffset = (offset * PresenterManager.TimeConversionFactor).ToString("F2");
+            }
         }
 
         public void UpdateCurrentScale(string unit, double unitsPerTick, int numberOfTicks)
@@ -106,6 +125,11 @@ namespace Pt5Viewer.Presenters
         public void UpdateCurrentOffset(double offset)
         {
             view.CurrentOffset = offset.ToString("F2");
+        }
+
+        public void UpdateDisplayFormat(bool isDisplayInTimeFormat)
+        {
+            UpdateTimeOffset(PresenterManager.TimeOffset);
         }
     }
 }

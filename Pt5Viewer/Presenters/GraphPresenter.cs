@@ -26,14 +26,19 @@ namespace Pt5Viewer.Presenters
 
             view.ScaleFormatEventTriggered += (s, e) =>
             {
-                if (view.IsDisplayInTimeFormat)
+                if (PresenterManager.IsDisplayInTimeFormat)
                 {
-                    view.XAxisFormattedLabel = $"_{e.Val}";
+                    view.XAxisFormattedLabel = $"{PresenterManager.GetDateTime(e.Val).ToString("HH:mm:ss.ffff")}";
                 }
                 else
                 {
                     view.XAxisFormattedLabel = $"{e.Val * PresenterManager.TimeConversionFactor}";
                 }
+            };
+
+            view.DisplayFormatChanged += (s, e) =>
+            {
+                PresenterManager.DisplayFormatChanged(e.IsDisplayInTimeFormat);
             };
         }
 
@@ -64,6 +69,11 @@ namespace Pt5Viewer.Presenters
         {
             view.SetYAxisOffset(offset);
 
+            view.UpdateGraph();
+        }
+
+        public void UpdateDisplayFormat(bool isDisplayInTimeFormat)
+        {
             view.UpdateGraph();
         }
     }

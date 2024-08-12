@@ -20,8 +20,7 @@ namespace Pt5Viewer.Views
 
         public event MouseEventHandler TimeOffsetChanged;
         public event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
-
-        public bool IsDisplayInTimeFormat { get; set; }
+        public event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
 
         public string XAxisFormattedLabel { get; set; }
 
@@ -96,9 +95,9 @@ namespace Pt5Viewer.Views
             ToolStripMenuItem displayInTimeFormatItem = new ToolStripMenuItem("Display in Time Format");
             displayInTimeFormatItem.CheckOnClick = true;
             displayInTimeFormatItem.Click += (s, e) => {
-                IsDisplayInTimeFormat = displayInTimeFormatItem.Checked;
-                UpdateGraph();
+                DisplayFormatChanged?.Invoke(s, new DisplayFormatEventArgs(displayInTimeFormatItem.Checked));
             };
+
             contextMenuStrip.Items.Add(displayInTimeFormatItem);
             ContextMenuStrip = contextMenuStrip;
 
@@ -153,6 +152,11 @@ namespace Pt5Viewer.Views
             gp.Y2Axis.Scale.Max = gp.Y2Axis.Scale.Min + delta;
         }
 
+        public void RefreshView()
+        {
+            UpdateGraph();
+        }
+
         public void UpdateGraph()
         {
             AxisChange();
@@ -180,6 +184,16 @@ namespace Pt5Viewer.Views
             Axis = axis;
             Val = val;
             Index = index;
+        }
+    }
+
+    public class DisplayFormatEventArgs : EventArgs
+    {
+        public bool IsDisplayInTimeFormat { get; }
+
+        public DisplayFormatEventArgs(bool isDisplayInTimeFormat)
+        {
+            IsDisplayInTimeFormat = isDisplayInTimeFormat;
         }
     }
 }

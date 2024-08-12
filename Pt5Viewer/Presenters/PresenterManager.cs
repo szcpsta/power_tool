@@ -25,6 +25,8 @@ namespace Pt5Viewer.Presenters
 
         public double TimeConversionFactor;
 
+        public bool IsDisplayInTimeFormat;
+
         private Dictionary<TimeUnitEnum, double> TimeConversionFactors = new Dictionary<TimeUnitEnum, double>
         {
             { TimeUnitEnum.Microsecond, 1_000_000.0 },
@@ -50,6 +52,16 @@ namespace Pt5Viewer.Presenters
             CurrentUnitsPerTick = 20;
             CurrentNumberOfTicks = 10;
             CurrentOffset = -30.0;
+        }
+
+        public DateTime GetDateTime(double timestamp)
+        {
+            return new DateTime(model.CaptureDate.Ticks + (long)(timestamp * 10_000_000));
+        }
+
+        public double GetTimestamp(DateTime datetime)
+        {
+            return (datetime.Ticks - model.CaptureDate.Ticks) / 10_000_000;
         }
 
         public void Start()
@@ -114,6 +126,13 @@ namespace Pt5Viewer.Presenters
             UpdateCurrentOffset();
         }
 
+        public void DisplayFormatChanged(bool isDisplayInTimeFormat)
+        {
+            IsDisplayInTimeFormat = isDisplayInTimeFormat;
+
+            UpdateDisplayInTimeFormat();
+        }
+
         private void UpdateTimeScale()
         {
             foreach (var scaleSyncPresenter in scaleSyncPresenters)
@@ -143,6 +162,14 @@ namespace Pt5Viewer.Presenters
             foreach (var scaleSyncPresenter in scaleSyncPresenters)
             {
                 scaleSyncPresenter.UpdateCurrentOffset(CurrentOffset);
+            }
+        }
+
+        private void UpdateDisplayInTimeFormat()
+        {
+            foreach (var scaleSyncPresenter in scaleSyncPresenters)
+            {
+                scaleSyncPresenter.UpdateDisplayFormat(IsDisplayInTimeFormat);
             }
         }
     }

@@ -27,9 +27,8 @@ namespace Pt5Viewer.Views
 
         event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
 
-        bool IsDisplayInTimeFormat { get; set; }
+        event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
 
         string XAxisFormattedLabel { get; set; }
-
     }
 }

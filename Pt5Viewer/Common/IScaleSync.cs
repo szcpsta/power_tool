@@ -17,5 +17,7 @@ namespace Pt5Viewer.Common
         void UpdateCurrentScale(string unit, double unitsPerTick, int numberOfTicks);
 
         void UpdateCurrentOffset(double offset);
+
+        void UpdateDisplayFormat(bool isDisplayInTimeFormat);
     }
 }

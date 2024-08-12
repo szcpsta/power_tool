@@ -38,5 +38,10 @@ namespace Pt5Viewer.Presenters
         {
             //throw new NotImplementedException();
         }
+
+        public void UpdateDisplayFormat(bool isDisplayInTimeFormat)
+        {
+            //
+        }
     }
 }
