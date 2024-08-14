@@ -32,7 +32,7 @@ namespace Pt5Viewer
 
             scalePresenter = new ScalePresenter(scaleView);
             presenterManager.AddPresenter(scalePresenter);
-            
+
             graphPresenter = new GraphPresenter(graphView);
             presenterManager.AddPresenter(graphPresenter);
 
@@ -43,7 +43,7 @@ namespace Pt5Viewer
         private void SetTitle()
         {
             Version version = Assembly.GetEntryAssembly().GetName().Version;
-            
+
             string title = $"[{Id}] {Application.ProductName} v{version.Major}.{version.Minor}.{version.Build}";
             if (version.Revision != 0)
             {
@@ -74,6 +74,24 @@ namespace Pt5Viewer
         private void MainForm_Load(object sender, EventArgs e)
         {
             presenterManager.Start();
+        }
+
+        private void MainForm_DragEnter(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length == 1)
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files.Length == 1)
+            {
+                presenterManager.Start(files[0]);
+            }
         }
     }
 }

@@ -73,6 +73,11 @@ namespace Pt5Viewer.Presenters
             UpdateCurrentOffset();
         }
 
+        public void Start(string pt5FilePath)
+        {
+            model.SetParser(pt5FilePath);
+        }
+
         public void AddPresenter(Presenter presenter)
         {
             presenter.PresenterManager = this;
