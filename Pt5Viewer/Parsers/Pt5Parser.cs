@@ -253,13 +253,13 @@ namespace Pt5Viewer.Parsers
             //HVPM Protocol Fields
             public byte measurementDataset;                         // 00 = Main + USB, 01 = BNC + USB
             public int HVmainVoltageSetting;                        //Main Vout
-            public UInt32 mainFineScale;                            //Current scaling by channel.  
-            public UInt32 mainCoarseScale;                          //Current scaling by channel. 
-            public UInt32 usbFineScale;                             //Current scaling by channel.  
-            public UInt32 usbCoarseScale;                           //Current scaling by channel.  
-            public UInt32 auxFineScale;                             //Current scaling by channel.  
-            public UInt32 auxCoarseScale;                           //Current scaling by channel.  
-            public short mainFineZeroOffset;                        //Zero-level offset for the PGA. 
+            public UInt32 mainFineScale;                            //Current scaling by channel.
+            public UInt32 mainCoarseScale;                          //Current scaling by channel.
+            public UInt32 usbFineScale;                             //Current scaling by channel.
+            public UInt32 usbCoarseScale;                           //Current scaling by channel.
+            public UInt32 auxFineScale;                             //Current scaling by channel.
+            public UInt32 auxCoarseScale;                           //Current scaling by channel.
+            public short mainFineZeroOffset;                        //Zero-level offset for the PGA.
             public short mainCoarseZeroOffset;                      //Zero-level offset for the PGA.
             public short USBFineZeroOffset;                         //Zero-level offset for the PGA.
             public short USBCoarseZeroOffset;                       //Zero-level offset for the PGA.
@@ -286,7 +286,7 @@ namespace Pt5Viewer.Parsers
             public double auxCurrent;  // current in milliamps
             public double auxVoltage;  // volts;
 
-            public bool markerPresent; // whether markers/voltages 
+            public bool markerPresent; // whether markers/voltages
                                        //      were recorded
             public bool marker0;       // Marker 0
             public bool marker1;       // Marker 1
@@ -652,8 +652,8 @@ namespace Pt5Viewer.Parsers
 #if DEBUG
                     Console.WriteLine("Sample count :" + sampleCount);
 #endif
-                    //// Pre-position input file to the beginning of the sample 
-                    //// data (saves a lot of repositioning in the GetSample 
+                    //// Pre-position input file to the beginning of the sample
+                    //// data (saves a lot of repositioning in the GetSample
                     //// routine)
                     //pt5Reader.BaseStream.Position = sampleOffset;
 
@@ -683,6 +683,11 @@ namespace Pt5Viewer.Parsers
                     //}
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return header.ToString();
         }
 
         public static bool TryParse(string pt5FilePath, out Pt5Parser parser)

@@ -177,5 +177,10 @@ namespace Pt5Viewer.Presenters
                 scaleSyncPresenter.UpdateDisplayFormat(IsDisplayInTimeFormat);
             }
         }
+
+        public override string ToString()
+        {
+            return model.ToString();
+        }
     }
 }

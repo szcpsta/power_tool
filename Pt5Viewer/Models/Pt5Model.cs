@@ -14,11 +14,23 @@ namespace Pt5Viewer.Models
 
         public DateTime CaptureDate = DateTime.Now;
 
-        public Pt5Parser parser;
+        private Pt5Parser parser;
 
         public bool SetParser(string pt5FilePath)
         {
             return Pt5Parser.TryParse(pt5FilePath, out parser);
+        }
+
+        public override string ToString()
+        {
+            if (parser == null)
+            {
+                return "NULL";
+            }
+            else
+            {
+                return parser.ToString();
+            }
         }
     }
 }

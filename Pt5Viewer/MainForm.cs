@@ -93,5 +93,15 @@ namespace Pt5Viewer
                 presenterManager.Start(files[0]);
             }
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.P))
+            {
+                Console.WriteLine(presenterManager.ToString());
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }
