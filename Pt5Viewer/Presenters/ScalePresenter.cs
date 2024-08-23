@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Pt5Viewer.Common;
 using Pt5Viewer.Enums;
+using Pt5Viewer.Models;
 using Pt5Viewer.Views;
 
 namespace Pt5Viewer.Presenters
@@ -130,6 +131,30 @@ namespace Pt5Viewer.Presenters
         public void UpdateDisplayFormat(bool isDisplayInTimeFormat)
         {
             UpdateTimeOffset(PresenterManager.TimeOffset);
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+        }
+
+        public override void Restart()
+        {
+            base.Restart();
+        }
+        public override void ModelClosing()
+        {
+            base.ModelClosing();
+        }
+
+        public override void ModelCreated(Pt5Model pt5Model)
+        {
+            base.ModelCreated(pt5Model);
+        }
+
+        public override void ModelStarted()
+        {
+            base.ModelStarted();
         }
     }
 }

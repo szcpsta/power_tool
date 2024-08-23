@@ -12,25 +12,39 @@ namespace Pt5Viewer.Views
 {
     public partial class StatisticsView : UserControl, IStatisticsView
     {
-        public string TimeUnit 
-        { 
+        public string TimeUnit
+        {
             get => labelTimeUnit.Text;
-            set => labelTimeUnit.Text = value; 
+            set => labelTimeUnit.Text = value;
         }
 
-        public string CurrentUnit 
+        public string CurrentUnit
         {
             get => labelCurrentUnit.Text;
             set => labelCurrentUnit.Text = value;
         }
 
+        public string TimeValue
+        {
+            get => labelTimeValue.Text;
+            set => labelTimeValue.Text = value;
+        }
+
+        public string SamplesValue
+        {
+            get => labelSamplesValue.Text;
+            set => labelSamplesValue.Text = value;
+        }
+
+        public string AverageCurrentValue
+        {
+            get => labelAverageCurrentValue.Text;
+            set => labelAverageCurrentValue.Text = value;
+        }
+
         public StatisticsView()
         {
             InitializeComponent();
-
-            labelTimeValue.Text = "-.--";
-            labelSamplesValue.Text = "-.--";
-            labelAverageCurrentValue.Text = "-.--";
         }
     }
 }

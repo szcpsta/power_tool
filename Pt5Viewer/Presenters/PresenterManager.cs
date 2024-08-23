@@ -21,6 +21,7 @@ namespace Pt5Viewer.Presenters
         public TimeUnitEnum TimeUnit { get; private set; }
         public TimeUnitsPerTickEnum TimeUnitsPerTick { get; private set; }
         public TimeNumberOfTicksEnum TimeNumberOfTicks { get; private set; }
+
         public double TimeOffset { get; private set; }
 
         public double TimeConversionFactor;
@@ -46,7 +47,6 @@ namespace Pt5Viewer.Presenters
             TimeUnit = TimeUnitEnum.Millisecond;
             TimeUnitsPerTick = TimeUnitsPerTickEnum.Hundred;
             TimeNumberOfTicks = TimeNumberOfTicksEnum.Ten;
-            TimeOffset = 0.0;
 
             CurrentUnit = "mA";
             CurrentUnitsPerTick = 20;
@@ -64,18 +64,20 @@ namespace Pt5Viewer.Presenters
             return (datetime.Ticks - model.CaptureDate.Ticks) / 10_000_000;
         }
 
-        public void Start()
+        public void Start(string pt5FilePath = null)
         {
-            UpdateTimeScale();
-            UpdateTimeOffset();
+            ModelClosing();
 
-            UpdateCurrentScale();
-            UpdateCurrentOffset();
-        }
+            // parser dispose
 
-        public void Start(string pt5FilePath)
-        {
-            model.SetParser(pt5FilePath);
+            ModelCreated(model); // 할당
+            Clear();  // 필터를 제거하고 다시 만든다.
+            Restart(); // 레코드를 다시 만든다.
+
+            if (model.SetParser(pt5FilePath) == true)
+            {
+                ModelStarted();
+            }
         }
 
         public void AddPresenter(Presenter presenter)
@@ -88,6 +90,54 @@ namespace Pt5Viewer.Presenters
             }
 
             presenters.Add(presenter);
+        }
+
+        public void ModelClosing()
+        {
+            foreach (var presenter in presenters)
+            {
+                presenter.ModelClosing();
+            }
+        }
+
+        public void ModelCreated(Pt5Model pt5Model)
+        {
+            foreach (var presenter in presenters)
+            {
+                presenter.ModelCreated(pt5Model);
+            }
+        }
+
+        public void Clear()
+        {
+            foreach (var presenter in presenters)
+            {
+                presenter.Clear();
+            }
+        }
+
+        public void Restart()
+        {
+            TimeOffset = 0.0;
+
+            UpdateTimeScale();
+            UpdateTimeOffset();
+
+            UpdateCurrentScale();
+            UpdateCurrentOffset();
+
+            foreach (var presenter in presenters)
+            {
+                presenter.Restart();
+            }
+        }
+
+        public void ModelStarted()
+        {
+            foreach (var presenter in presenters)
+            {
+                presenter.ModelStarted();
+            }
         }
 
         public void TimeScaleChanged(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)

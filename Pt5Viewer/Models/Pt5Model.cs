@@ -10,15 +10,29 @@ namespace Pt5Viewer.Models
 {
     public class Pt5Model
     {
-        public double TimeScaleMax = 60_000;    // s
+        public double TimeScaleMax => parser != null ?
+                                    parser.TimeScaleMax : 60_000;    // s
 
-        public DateTime CaptureDate = DateTime.Now;
+        public DateTime CaptureDate => parser != null?
+                                    parser.CaptureDate : DateTime.Now;
 
-        private Pt5Parser parser;
+        public ulong SampleCount => parser.SampleCount;
+
+        public float AverageCurrent => parser.AverageCurrent;
+
+        private Pt5Parser parser = null;
+
+        public bool IsStarted => parser != null;
 
         public bool SetParser(string pt5FilePath)
         {
-            return Pt5Parser.TryParse(pt5FilePath, out parser);
+            bool isSuccess = Pt5Parser.TryParse(pt5FilePath, out parser);
+            if (isSuccess == true)
+            {
+
+            }
+
+            return isSuccess;
         }
 
         public override string ToString()

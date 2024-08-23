@@ -481,7 +481,7 @@ namespace Pt5Viewer.Parsers
             return result;
         }
 
-        private long SampleCount(BinaryReader reader,
+        private long _SampleCount(BinaryReader reader,
                                        CaptureMask captureDataMask)
         {
             return (reader.BaseStream.Length - sampleOffset)
@@ -628,61 +628,75 @@ namespace Pt5Viewer.Parsers
         private Pt5Header header;
         private StatusPacket statusPacket;
 
-        private  Pt5Parser(string pt5FilePath)
+        private FileStream pt5Stream;
+        private BinaryReader pt5Reader;
+
+        private Pt5Parser(string pt5FilePath)
         {
             filePath = pt5FilePath;
 
-            using (FileStream pt5Stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            {
-                using (BinaryReader pt5Reader = new BinaryReader(pt5Stream))
-                {
-                    // Read the file header
-                    header = new Pt5Header();
-                    ReadHeader(pt5Reader, ref header);
+            pt5Stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            pt5Reader = new BinaryReader(pt5Stream);
+
+            // Read the file header
+            header = new Pt5Header();
+            ReadHeader(pt5Reader, ref header);
 #if DEBUG
-                    Console.WriteLine("header : " + header.ToString());
+            Console.WriteLine("header : " + header.ToString());
 #endif
-                    // Read the Status Packet
-                    statusPacket = new StatusPacket();
-                    ReadStatusPacket(pt5Reader, ref statusPacket);
+            // Read the Status Packet
+            statusPacket = new StatusPacket();
+            ReadStatusPacket(pt5Reader, ref statusPacket);
 
 
-                    // Determine the number of samples in the file
-                    long sampleCount = SampleCount(pt5Reader, header.captureDataMask);
+            // Determine the number of samples in the file
+            long sampleCount = _SampleCount(pt5Reader, header.captureDataMask);
 #if DEBUG
-                    Console.WriteLine("Sample count :" + sampleCount);
+            Console.WriteLine("Sample count :" + sampleCount);
 #endif
-                    //// Pre-position input file to the beginning of the sample
-                    //// data (saves a lot of repositioning in the GetSample
-                    //// routine)
-                    //pt5Reader.BaseStream.Position = sampleOffset;
+            //// Pre-position input file to the beginning of the sample
+            //// data (saves a lot of repositioning in the GetSample
+            //// routine)
+            //pt5Reader.BaseStream.Position = sampleOffset;
 
-                    //long missingCount = 0;
+            //long missingCount = 0;
 
-                    //// Process the samples sequentially, beginning to end
-                    //Sample sample = new Sample();
-                    //for (long sampleIndex = 0;
-                    //     sampleIndex < sampleCount;
-                    //     sampleIndex++)
-                    //{
-                    //    // Read the next sample
-                    //    GetSample(sampleIndex, header.captureDataMask,
-                    //                  statusPacket, pt5Reader, ref sample);
+            //// Process the samples sequentially, beginning to end
+            //Sample sample = new Sample();
+            //for (long sampleIndex = 0;
+            //     sampleIndex < sampleCount;
+            //     sampleIndex++)
+            //{
+            //    // Read the next sample
+            //    GetSample(sampleIndex, header.captureDataMask,
+            //                  statusPacket, pt5Reader, ref sample);
 
-                    //    // Process the sample
-                    //    Console.WriteLine("#{0} {1} sec MAIN: {2} mA {3} V USB: {4} mA {5} V",
-                    //                      sampleIndex,
-                    //                      sample.timeStamp,
-                    //                      sample.mainCurrent,
-                    //                      sample.mainVoltage,
-                    //                      sample.usbCurrent,
-                    //                      sample.usbVoltage);
+            //    // Process the sample
+            //    Console.WriteLine("#{0} {1} sec MAIN: {2} mA {3} V USB: {4} mA {5} V",
+            //                      sampleIndex,
+            //                      sample.timeStamp,
+            //                      sample.mainCurrent,
+            //                      sample.mainVoltage,
+            //                      sample.usbCurrent,
+            //                      sample.usbVoltage);
 
-                    //    if (sample.missing)
-                    //        missingCount++;
-                    //}
-                }
-            }
+            //    if (sample.missing)
+            //        missingCount++;
+            //}
+
+        }
+
+        public DateTime CaptureDate => header.captureDate;
+
+        public double TimeScaleMax => header.sampleCount / (1000.0 * statusPacket.sampleRate);
+
+        public ulong SampleCount => header.sampleCount;
+
+        public float AverageCurrent => header.avgMainCurrent;
+
+        public long GetIndexFromTimestamp(double timestamp)
+        {
+            return (long)(1000.0 * statusPacket.sampleRate * timestamp);
         }
 
         public override string ToString()

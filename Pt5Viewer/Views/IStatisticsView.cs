@@ -11,5 +11,11 @@ namespace Pt5Viewer.Views
         string TimeUnit { get; set; }
 
         string CurrentUnit { get; set; }
+
+        string TimeValue { get;  set; }
+
+        string SamplesValue { get; set; }
+
+        string AverageCurrentValue { get; set; }
     }
 }
