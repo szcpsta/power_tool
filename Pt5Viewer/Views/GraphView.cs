@@ -10,6 +10,8 @@ using System.Windows.Forms;
 
 using ZedGraph;
 
+using Pt5Viewer.Common;
+
 namespace Pt5Viewer.Views
 {
     public partial class GraphView : ZedGraphControl, IGraphView
@@ -17,6 +19,8 @@ namespace Pt5Viewer.Views
         GraphPane gp;
         TextObj y2AxisTitleObj;
         ContextMenuStrip contextMenuStrip;
+        PointPairList ppl;
+        LineItem lineItem;
 
         public event MouseEventHandler TimeOffsetChanged;
         public event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
@@ -27,6 +31,8 @@ namespace Pt5Viewer.Views
         public GraphView()
         {
             InitializeComponent();
+
+            ppl = new PointPairList();
 
             gp = GraphPane;
 
@@ -152,15 +158,51 @@ namespace Pt5Viewer.Views
             gp.Y2Axis.Scale.Max = gp.Y2Axis.Scale.Min + delta;
         }
 
-        public void RefreshView()
+        public void ClearLineItem()
         {
-            UpdateGraph();
+            ppl.Clear();
+        }
+
+        public void LoadLineItem(string label)
+        {
+            lineItem = gp.AddCurve(label, ppl, Color.Orange, SymbolType.None);
+            lineItem.IsY2Axis = true;
+        }
+
+        public void InsertPoint(int index, double x, double y)
+        {
+            if (y == Constant.Missing)
+            {
+                y = PointPair.Missing;
+            }
+            ppl.Insert(index, x, y);
+        }
+
+        public void RemoveRange(int index, int count)
+        {
+            ppl.RemoveRange(index, count);
+        }
+
+        public void AddPoint(double x, double y)
+        {
+            if (y == Constant.Missing)
+            {
+                y = PointPair.Missing;
+            }
+            ppl.Add(x, y);
         }
 
         public void UpdateGraph()
         {
             AxisChange();
             Invalidate();
+        }
+
+        public void Clear()
+        {
+            ppl.Clear();
+            gp.CurveList.Remove(lineItem);
+            lineItem = null;
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)

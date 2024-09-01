@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Pt5Viewer.Common;
+
 namespace Pt5Viewer.Parsers
 {
     public class Pt5Parser
@@ -631,6 +633,8 @@ namespace Pt5Viewer.Parsers
         private FileStream pt5Stream;
         private BinaryReader pt5Reader;
 
+        private Sample sample;
+
         private Pt5Parser(string pt5FilePath)
         {
             filePath = pt5FilePath;
@@ -654,6 +658,9 @@ namespace Pt5Viewer.Parsers
 #if DEBUG
             Console.WriteLine("Sample count :" + sampleCount);
 #endif
+            sample = new Sample();
+            sample.sampleIndex = -1;
+
             //// Pre-position input file to the beginning of the sample
             //// data (saves a lot of repositioning in the GetSample
             //// routine)
@@ -696,7 +703,23 @@ namespace Pt5Viewer.Parsers
 
         public long GetIndexFromTimestamp(double timestamp)
         {
-            return (long)(1000.0 * statusPacket.sampleRate * timestamp);
+            return (long)Math.Round(1000.0 * statusPacket.sampleRate * timestamp, 5);
+        }
+
+        public double GetTimestampFromIndex(long index)
+        {
+            return index / (1000.0 * statusPacket.sampleRate);
+        }
+
+        public double GetCurrentFromIndex(long index)
+        {
+            if (sample.sampleIndex != index)
+            {
+                GetSample(index, header.captureDataMask, statusPacket, pt5Reader, ref sample);
+            }
+
+            if (sample.missing == true) return Constant.Missing;
+            return sample.mainCurrent;
         }
 
         public override string ToString()

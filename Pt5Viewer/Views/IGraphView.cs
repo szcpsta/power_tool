@@ -30,5 +30,17 @@ namespace Pt5Viewer.Views
         event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
 
         string XAxisFormattedLabel { get; set; }
+
+        void ClearLineItem();
+
+        void LoadLineItem(string label);
+
+        void AddPoint(double x, double y);
+
+        void InsertPoint(int index, double x, double y);
+
+        void RemoveRange(int index, int count);
+
+        void Clear();
     }
 }

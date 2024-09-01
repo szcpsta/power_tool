@@ -24,6 +24,21 @@ namespace Pt5Viewer.Models
 
         public bool IsStarted => parser != null;
 
+        public double GetX(long index)
+        {
+            return parser.GetTimestampFromIndex(index);
+        }
+
+        public double GetY(long index)
+        {
+            return parser.GetCurrentFromIndex(index);
+        }
+
+        public long GetIndexFromTimestamp(double timestamp)
+        {
+            return parser.GetIndexFromTimestamp(timestamp);
+        }
+
         public bool SetParser(string pt5FilePath)
         {
             bool isSuccess = Pt5Parser.TryParse(pt5FilePath, out parser);
@@ -33,6 +48,11 @@ namespace Pt5Viewer.Models
             }
 
             return isSuccess;
+        }
+
+        public void Clear()
+        {
+            parser = null;
         }
 
         public override string ToString()

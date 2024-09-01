@@ -16,6 +16,9 @@ namespace Pt5Viewer.Presenters
         private IGraphView view;
         private Pt5Model model;
 
+        private double XScaleMin;
+        private double XScaleMax;
+
         public GraphPresenter(IGraphView graphView)
         {
             view = graphView;
@@ -46,6 +49,20 @@ namespace Pt5Viewer.Presenters
 
         public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
         {
+            XScaleMax = XScaleMin + (int)unitsPerTick / PresenterManager.TimeConversionFactor * (int)numberOfTicks;
+
+            if (model.IsStarted)
+            {
+                view.ClearLineItem();
+
+                long firstIndex = model.GetIndexFromTimestamp(XScaleMin);
+                long lastIndex = model.GetIndexFromTimestamp(XScaleMax);
+                for (long i = firstIndex; i <= lastIndex; i++)
+                {
+                    view.AddPoint(model.GetX(i), model.GetY(i));
+                }
+            }
+
             view.SetXAxisTitle($"Time({Util.GetEnumDescription(unit)})");
             view.SetXAxisScale((int)unitsPerTick / PresenterManager.TimeConversionFactor, (int)numberOfTicks);
 
@@ -54,6 +71,63 @@ namespace Pt5Viewer.Presenters
 
         public void UpdateTimeOffset(double offset)
         {
+            double old_min = XScaleMin;
+            double old_max = XScaleMax;
+
+            double xSpan = XScaleMax - XScaleMin;
+
+            XScaleMin = offset;
+            XScaleMax = XScaleMin + xSpan;
+
+            double new_min = XScaleMin;
+            double new_max = XScaleMax;
+
+            double delta = Math.Abs(old_min - new_min);
+
+            if (model.IsStarted)
+            {
+                if (xSpan <= delta)
+                {
+                    view.ClearLineItem();
+
+                    long firstIndex = model.GetIndexFromTimestamp(new_min);
+                    long lastIndex = model.GetIndexFromTimestamp(new_max);
+                    for (long i = firstIndex; i <= lastIndex; i++)
+                    {
+                        view.AddPoint(model.GetX(i), model.GetY(i));
+                    }
+                }
+                else if (old_min < new_min)
+                {
+                    long firstIndex = model.GetIndexFromTimestamp(new_min);
+                    long lastIndex = model.GetIndexFromTimestamp(new_max);
+
+                    long old_firstIndex = model.GetIndexFromTimestamp(old_min);
+                    long old_lastIndex = model.GetIndexFromTimestamp(old_max);
+
+                    view.RemoveRange(0, (int)(lastIndex - old_lastIndex));
+                    for (long i = old_lastIndex + 1; i <= lastIndex; i++)
+                    {
+                        view.AddPoint(model.GetX(i), model.GetY(i));
+                    }
+                }
+                else
+                {
+                    long firstIndex = model.GetIndexFromTimestamp(new_min);
+                    long lastIndex = model.GetIndexFromTimestamp(new_max);
+
+                    long old_firstIndex = model.GetIndexFromTimestamp(old_min);
+                    long old_lastIndex = model.GetIndexFromTimestamp(old_max);
+
+                    for (long i = old_firstIndex - 1; i >= firstIndex; i--)
+                    {
+                        view.InsertPoint(0, model.GetX(i), model.GetY(i));
+                    }
+
+                    view.RemoveRange((int)(lastIndex - firstIndex + 1), (int)(old_lastIndex - lastIndex));
+                }
+            }
+
             view.SetXAxisOffset(offset);
 
             view.UpdateGraph();
@@ -90,6 +164,7 @@ namespace Pt5Viewer.Presenters
         }
         public override void ModelClosing()
         {
+            view.Clear();
             model = null;
         }
 
@@ -100,6 +175,13 @@ namespace Pt5Viewer.Presenters
 
         public override void ModelStarted()
         {
+            view.LoadLineItem("Current");
+            long firstIndex = model.GetIndexFromTimestamp(XScaleMin);
+            long lastIndex = model.GetIndexFromTimestamp(XScaleMax);
+            for (long i = firstIndex; i<=lastIndex; i++)
+            {
+                view.AddPoint(model.GetX(i), model.GetY(i));
+            }
             base.ModelStarted();
         }
     }

@@ -18,6 +18,8 @@ namespace Pt5Viewer.Common
         public static readonly List<string> CurrentUnitsPerTickList;
         public static readonly List<string> CurrentNumberOfTicksList;
 
+        public static readonly double Missing = 0xFFFFFFFF;
+
         static Constant()
         {
             CurrentUnitList = new List<string> { "A", "mA", "uA" };
