@@ -98,10 +98,8 @@ namespace Pt5Viewer
             this.graphView.Location = new System.Drawing.Point(0, 0);
             this.graphView.Name = "graphView";
             this.graphView.ScrollGrace = 0D;
-            this.graphView.ScrollMaxX = 0D;
             this.graphView.ScrollMaxY = 0D;
             this.graphView.ScrollMaxY2 = 0D;
-            this.graphView.ScrollMinX = 0D;
             this.graphView.ScrollMinY = 0D;
             this.graphView.ScrollMinY2 = 0D;
             this.graphView.Size = new System.Drawing.Size(763, 534);

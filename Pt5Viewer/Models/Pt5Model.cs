@@ -16,7 +16,7 @@ namespace Pt5Viewer.Models
         public DateTime CaptureDate => parser != null?
                                     parser.CaptureDate : DateTime.Now;
 
-        public ulong SampleCount => parser.SampleCount;
+        public long SampleCount => (long)parser.SampleCount;
 
         public float AverageCurrent => parser.AverageCurrent;
 
@@ -36,7 +36,8 @@ namespace Pt5Viewer.Models
 
         public long GetIndexFromTimestamp(double timestamp)
         {
-            return parser.GetIndexFromTimestamp(timestamp);
+            long temp = parser.GetIndexFromTimestamp(timestamp);
+            return temp >= SampleCount ? SampleCount - 1 : temp;
         }
 
         public bool SetParser(string pt5FilePath)

@@ -29,11 +29,13 @@ namespace Pt5Viewer.Views
 
         event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
 
+        event EventHandler<ScrollEventArgs> ScrollEventDone;
+
         string XAxisFormattedLabel { get; set; }
 
         void ClearLineItem();
 
-        void LoadLineItem(string label);
+        void LoadLineItem(double scrollMaxX);
 
         void AddPoint(double x, double y);
 

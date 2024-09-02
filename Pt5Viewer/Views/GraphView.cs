@@ -25,6 +25,7 @@ namespace Pt5Viewer.Views
         public event MouseEventHandler TimeOffsetChanged;
         public event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
         public event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
+        public event EventHandler<ScrollEventArgs> ScrollEventDone;
 
         public string XAxisFormattedLabel { get; set; }
 
@@ -33,6 +34,10 @@ namespace Pt5Viewer.Views
             InitializeComponent();
 
             ppl = new PointPairList();
+
+            IsShowHScrollBar = true;
+            ScrollMinX = 0;
+            ScrollMaxX = 60_000;
 
             gp = GraphPane;
 
@@ -163,10 +168,13 @@ namespace Pt5Viewer.Views
             ppl.Clear();
         }
 
-        public void LoadLineItem(string label)
+        public void LoadLineItem(double scrollMaxX)
         {
-            lineItem = gp.AddCurve(label, ppl, Color.Orange, SymbolType.None);
+            lineItem = gp.AddCurve("Current", ppl, Color.Orange, SymbolType.None);
             lineItem.IsY2Axis = true;
+
+            ScrollMinX = 0;
+            ScrollMaxX = scrollMaxX;
         }
 
         public void InsertPoint(int index, double x, double y)
@@ -211,6 +219,11 @@ namespace Pt5Viewer.Views
 
             TimeOffsetChanged?.Invoke(this, e);
         }
+
+        private void GraphView_ScrollDoneEvent(ZedGraphControl sender, ScrollBar scrollBar, ZoomState oldState, ZoomState newState)
+        {
+            ScrollEventDone?.Invoke(this, new ScrollEventArgs(sender.GraphPane.XAxis.Scale.Min));
+        }
     }
 
     public class ScaleFormatEventArgs : EventArgs
@@ -236,6 +249,16 @@ namespace Pt5Viewer.Views
         public DisplayFormatEventArgs(bool isDisplayInTimeFormat)
         {
             IsDisplayInTimeFormat = isDisplayInTimeFormat;
+        }
+    }
+
+    public class ScrollEventArgs : EventArgs
+    {
+        public double Val { get; }
+
+        public ScrollEventArgs(double val)
+        {
+            Val = val;
         }
     }
 }

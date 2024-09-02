@@ -45,6 +45,11 @@ namespace Pt5Viewer.Presenters
             {
                 PresenterManager.DisplayFormatChanged(e.IsDisplayInTimeFormat);
             };
+
+            view.ScrollEventDone += (s, e) =>
+            {
+                PresenterManager.TimeOffsetChanged(e.Val);
+            };
         }
 
         public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
@@ -175,13 +180,15 @@ namespace Pt5Viewer.Presenters
 
         public override void ModelStarted()
         {
-            view.LoadLineItem("Current");
+            view.LoadLineItem(model.TimeScaleMax);
+
             long firstIndex = model.GetIndexFromTimestamp(XScaleMin);
             long lastIndex = model.GetIndexFromTimestamp(XScaleMax);
             for (long i = firstIndex; i<=lastIndex; i++)
             {
                 view.AddPoint(model.GetX(i), model.GetY(i));
             }
+
             base.ModelStarted();
         }
     }
