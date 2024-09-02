@@ -69,7 +69,7 @@ namespace Pt5Viewer.Presenters
             ModelClosing();
 
             // parser dispose
-            model.Clear();
+            model.DisposeParser();
 
             ModelCreated(model); // 할당
             Clear();  // 필터를 제거하고 다시 만든다.

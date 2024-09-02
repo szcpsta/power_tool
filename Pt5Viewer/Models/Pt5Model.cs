@@ -10,6 +10,8 @@ namespace Pt5Viewer.Models
 {
     public class Pt5Model
     {
+        private Pt5Parser parser = null;
+
         public double TimeScaleMax => parser != null ?
                                     parser.TimeScaleMax : 60_000;    // s
 
@@ -19,8 +21,6 @@ namespace Pt5Viewer.Models
         public long SampleCount => (long)parser.SampleCount;
 
         public float AverageCurrent => parser.AverageCurrent;
-
-        private Pt5Parser parser = null;
 
         public bool IsStarted => parser != null;
 
@@ -51,11 +51,6 @@ namespace Pt5Viewer.Models
             return isSuccess;
         }
 
-        public void Clear()
-        {
-            parser = null;
-        }
-
         public override string ToString()
         {
             if (parser == null)
@@ -65,6 +60,14 @@ namespace Pt5Viewer.Models
             else
             {
                 return parser.ToString();
+            }
+        }
+
+        public void DisposeParser()
+        {
+            if (parser != null)
+            {
+                parser.Dispose();
             }
         }
     }

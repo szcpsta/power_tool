@@ -10,7 +10,7 @@ using Pt5Viewer.Common;
 
 namespace Pt5Viewer.Parsers
 {
-    public class Pt5Parser
+    public class Pt5Parser : IDisposable
     {
         #region Constants
         // Fixed file offsets
@@ -635,6 +635,8 @@ namespace Pt5Viewer.Parsers
 
         private Sample sample;
 
+        private bool disposed = false;
+
         private Pt5Parser(string pt5FilePath)
         {
             filePath = pt5FilePath;
@@ -746,6 +748,43 @@ namespace Pt5Viewer.Parsers
 
             parser = new Pt5Parser(pt5FilePath);
             return true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed == false)
+            {
+                if (disposing == true)
+                {
+                    // 관리되는 리소스 해제
+                    if (pt5Reader != null)
+                    {
+                        pt5Reader.Dispose();
+                        pt5Reader = null;
+                    }
+
+                    if (pt5Stream != null)
+                    {
+                        pt5Stream.Dispose();
+                        pt5Stream = null;
+                    }
+                }
+
+                // 관리되지 않는 리소스 해제는 여기에 추가 (필요시)
+
+                disposed = true;
+            }
+        }
+
+        ~Pt5Parser()
+        {
+            Dispose(false);
         }
     }
 }
