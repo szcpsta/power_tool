@@ -119,7 +119,7 @@ namespace Pt5Viewer.Presenters
         public void UpdateCurrentScale(string unit, double unitsPerTick, int numberOfTicks)
         {
             view.CurrentUnit = unit;
-            view.CurrentUnitsPerTick = (unitsPerTick * PresenterManager.TimeConversionFactor).ToString();
+            view.CurrentUnitsPerTick = unitsPerTick.ToString();
             view.CurrentNumberOfTicks = numberOfTicks.ToString();
         }
 
