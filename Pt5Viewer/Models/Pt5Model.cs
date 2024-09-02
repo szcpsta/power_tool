@@ -24,6 +24,8 @@ namespace Pt5Viewer.Models
 
         public bool IsStarted => parser != null;
 
+        public string FilePath => parser.FilePath;
+
         public double GetX(long index)
         {
             return parser.GetTimestampFromIndex(index);

@@ -695,6 +695,8 @@ namespace Pt5Viewer.Parsers
 
         }
 
+        public string FilePath => filePath;
+
         public DateTime CaptureDate => header.captureDate;
 
         public double TimeScaleMax => header.sampleCount / (1000.0 * statusPacket.sampleRate);

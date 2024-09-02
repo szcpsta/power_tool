@@ -12,6 +12,12 @@ namespace Pt5Viewer.Views
 {
     public partial class StatisticsView : UserControl, IStatisticsView
     {
+        public string Title
+        {
+            get => groupBox1.Text;
+            set => groupBox1.Text = value;
+        }
+
         public string TimeUnit
         {
             get => labelTimeUnit.Text;

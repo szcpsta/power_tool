@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,6 +54,7 @@ namespace Pt5Viewer.Presenters
 
         public override void Restart()
         {
+            view.Title = "CAPTURE STATS";
             view.TimeValue = "-.--";
             view.SamplesValue = "-.--";
             view.AverageCurrentValue = "-.--";
@@ -70,6 +72,7 @@ namespace Pt5Viewer.Presenters
 
         public override void ModelStarted()
         {
+            view.Title = Path.GetFileName(model.FilePath);
             UpdateTimeValue();
             view.SamplesValue = model.SampleCount.ToString();
             view.AverageCurrentValue = model.AverageCurrent.ToString("F2");

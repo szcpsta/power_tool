@@ -8,6 +8,8 @@ namespace Pt5Viewer.Views
 {
     public interface IStatisticsView
     {
+        string Title { get; set; }
+
         string TimeUnit { get; set; }
 
         string CurrentUnit { get; set; }
