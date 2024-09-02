@@ -68,6 +68,7 @@ namespace Pt5Viewer.Models
             if (parser != null)
             {
                 parser.Dispose();
+                parser = null;
             }
         }
     }
