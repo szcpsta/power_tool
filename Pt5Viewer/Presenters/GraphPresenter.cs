@@ -110,7 +110,7 @@ namespace Pt5Viewer.Presenters
                     long old_firstIndex = model.GetIndexFromTimestamp(old_min);
                     long old_lastIndex = model.GetIndexFromTimestamp(old_max);
 
-                    view.RemoveRange(0, (int)(lastIndex - old_lastIndex));
+                    view.RemoveRange(0, (int)(firstIndex - old_firstIndex));
                     for (long i = old_lastIndex + 1; i <= lastIndex; i++)
                     {
                         view.AddPoint(model.GetX(i), model.GetY(i));
