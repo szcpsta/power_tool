@@ -18,7 +18,7 @@ namespace Pt5Viewer.Common
         public static readonly List<string> CurrentUnitsPerTickList;
         public static readonly List<string> CurrentNumberOfTicksList;
 
-        public static readonly double Missing = 0xFFFFFFFF;
+        public static readonly double Missing = Double.MaxValue;
 
         static Constant()
         {
