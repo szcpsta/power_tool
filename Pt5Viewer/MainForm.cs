@@ -38,6 +38,18 @@ namespace Pt5Viewer
 
             statisticsPresenter = new StatisticsPresenter(statisticsView);
             presenterManager.AddPresenter(statisticsPresenter);
+
+            graphPresenter.SelectionRangeChanged += (s, e) =>
+            {
+                if (e == null)
+                {
+                    statisticsPresenter.UpdateStats();
+                }
+                else
+                {
+                    statisticsPresenter.UpdateStats(e.Time, e.Samples, e.AverageCurrent);
+                }
+            };
         }
 
         private void SetTitle()

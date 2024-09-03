@@ -19,6 +19,8 @@ namespace Pt5Viewer.Presenters
         private double XScaleMin;
         private double XScaleMax;
 
+        public event EventHandler<SelectionRangeChangedEventArgs> SelectionRangeChanged;
+
         public GraphPresenter(IGraphView graphView)
         {
             view = graphView;
@@ -49,6 +51,11 @@ namespace Pt5Viewer.Presenters
             view.ScrollEventDone += (s, e) =>
             {
                 PresenterManager.TimeOffsetChanged(e.Val);
+            };
+
+            view.SelectionRangeChanged += (s, e) =>
+            {
+                SelectionRangeChanged?.Invoke(s, e);
             };
         }
 

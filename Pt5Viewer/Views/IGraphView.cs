@@ -31,6 +31,8 @@ namespace Pt5Viewer.Views
 
         event EventHandler<ScrollEventArgs> ScrollEventDone;
 
+        event EventHandler<SelectionRangeChangedEventArgs> SelectionRangeChanged;
+
         string XAxisFormattedLabel { get; set; }
 
         void ClearLineItem();

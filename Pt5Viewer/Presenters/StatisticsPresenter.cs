@@ -24,7 +24,7 @@ namespace Pt5Viewer.Presenters
 
         public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
         {
-            UpdateTimeValue();
+            UpdateTimeValue(model.TimeScaleMax);
             view.TimeUnit = Util.GetEnumDescription(unit);
         }
 
@@ -73,14 +73,28 @@ namespace Pt5Viewer.Presenters
         public override void ModelStarted()
         {
             view.Title = Path.GetFileName(model.FilePath);
-            UpdateTimeValue();
-            view.SamplesValue = model.SampleCount.ToString();
-            view.AverageCurrentValue = model.AverageCurrent.ToString("F2");
+            UpdateStats();
         }
 
-        private void UpdateTimeValue()
+        public void UpdateStats()
         {
-            view.TimeValue = (model.TimeScaleMax * PresenterManager.TimeConversionFactor).ToString("F2");
+            if (model != null)
+            {
+                UpdateTimeValue(model.TimeScaleMax);
+                view.SamplesValue = model.SampleCount.ToString();
+                view.AverageCurrentValue = model.AverageCurrent.ToString("F2");
+            }
+        }
+        public void UpdateStats(double time, long samples, double averageCurrent)
+        {
+            UpdateTimeValue(time);
+            view.SamplesValue = samples.ToString();
+            view.AverageCurrentValue = averageCurrent.ToString("F2");
+        }
+
+        private void UpdateTimeValue(double timespan)
+        {
+            view.TimeValue = (timespan * PresenterManager.TimeConversionFactor).ToString("F2");
         }
     }
 }

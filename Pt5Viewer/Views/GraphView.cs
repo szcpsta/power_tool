@@ -35,6 +35,7 @@ namespace Pt5Viewer.Views
         public event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
         public event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
         public event EventHandler<ScrollEventArgs> ScrollEventDone;
+        public event EventHandler<SelectionRangeChangedEventArgs> SelectionRangeChanged;
 
         public string XAxisFormattedLabel { get; set; }
 
@@ -114,13 +115,15 @@ namespace Pt5Viewer.Views
             contextMenuStrip = new ContextMenuStrip();
             ToolStripMenuItem displayInTimeFormatItem = new ToolStripMenuItem("Display in Time Format");
             displayInTimeFormatItem.CheckOnClick = true;
-            displayInTimeFormatItem.Click += (s, e) => {
+            displayInTimeFormatItem.Click += (s, e) =>
+            {
                 DisplayFormatChanged?.Invoke(s, new DisplayFormatEventArgs(displayInTimeFormatItem.Checked));
             };
 
             contextMenuStrip.Items.Add(displayInTimeFormatItem);
             ContextMenuStrip = contextMenuStrip;
-            ContextMenuStrip.Opening += (s, e) => {
+            ContextMenuStrip.Opening += (s, e) =>
+            {
                 if (preventContextMenuStrip == true)
                 {
                     e.Cancel = true;
@@ -240,6 +243,32 @@ namespace Pt5Viewer.Views
             TimeOffsetChanged?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// PointPairList 내에서 timestamp의 값보다 크거나 같은 값의 index를 반환한다.
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        private int GetIndexOf(double timestamp)
+        {
+            int s = 0;
+            int e = ppl.Count;
+
+            while (s + 1 < e)
+            {
+                int mid = (s + e) >> 1;
+                if (timestamp < ppl[mid].X)
+                {
+                    e = mid;
+                }
+                else
+                {
+                    s = mid;
+                }
+            }
+
+            return s;
+        }
+
         private void GraphView_ScrollDoneEvent(ZedGraphControl sender, ScrollBar scrollBar, ZoomState oldState, ZoomState newState)
         {
             ScrollEventDone?.Invoke(this, new ScrollEventArgs(sender.GraphPane.XAxis.Scale.Min));
@@ -255,6 +284,7 @@ namespace Pt5Viewer.Views
                     _dragBox = null;
                     Invalidate();
 
+                    SelectionRangeChanged?.Invoke(this, null);
                     preventContextMenuStrip = true;
 
                     return true;
@@ -316,6 +346,28 @@ namespace Pt5Viewer.Views
         {
             if (_isDragging)
             {
+                int x1Index = GetIndexOf(_dragBox.Location.X1);
+                int x2Index = GetIndexOf(_dragBox.Location.X2);
+
+                int count = x2Index - x1Index;
+                int missingCount = 0;
+
+                if(count != 0)
+                {
+                    double sum = 0;
+                    for (int i = x1Index; i < x2Index; i++)
+                    {
+                        if (ppl[i].Y == Constant.Missing)
+                        {
+                            missingCount++;
+                            continue;
+                        }
+                        sum += ppl[i].Y;
+                    }
+
+                    SelectionRangeChanged?.Invoke(this, new SelectionRangeChangedEventArgs(ppl[x2Index].X - ppl[x1Index].X, count, sum / (count - missingCount)));
+                }
+
                 _isDragging = false;
                 Invalidate();
 
@@ -359,6 +411,22 @@ namespace Pt5Viewer.Views
         public ScrollEventArgs(double val)
         {
             Val = val;
+        }
+    }
+
+    public class SelectionRangeChangedEventArgs : EventArgs
+    {
+        public double Time { get; }
+
+        public long Samples { get; }
+
+        public double AverageCurrent { get; }
+
+        public SelectionRangeChangedEventArgs(double time, long samples, double averageCurrent)
+        {
+            Time = time;
+            Samples = samples;
+            AverageCurrent = averageCurrent;
         }
     }
 }
