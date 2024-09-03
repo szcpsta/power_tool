@@ -37,6 +37,9 @@ namespace Pt5Viewer.Views
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "GraphView";
             this.ScrollDoneEvent += new ZedGraph.ZedGraphControl.ScrollDoneHandler(this.GraphView_ScrollDoneEvent);
+            this.MouseDownEvent += new ZedGraph.ZedGraphControl.ZedMouseEventHandler(this.GraphView_MouseDownEvent);
+            this.MouseUpEvent += new ZedGraph.ZedGraphControl.ZedMouseEventHandler(this.GraphView_MouseUpEvent);
+            this.MouseMoveEvent += new ZedGraph.ZedGraphControl.ZedMouseEventHandler(this.GraphView_MouseMoveEvent);
             this.ResumeLayout(false);
 
         }

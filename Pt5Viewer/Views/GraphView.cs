@@ -22,6 +22,15 @@ namespace Pt5Viewer.Views
         PointPairList ppl;
         LineItem lineItem;
 
+        #region DragBox
+        private PointF _startDragPoint;
+        private PointF _endDragPoint;
+        private BoxObj _dragBox;
+        private bool _isDragging = false;
+        #endregion DragBox
+
+        private bool preventContextMenuStrip = false;
+
         public event MouseEventHandler TimeOffsetChanged;
         public event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
         public event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
@@ -111,6 +120,13 @@ namespace Pt5Viewer.Views
 
             contextMenuStrip.Items.Add(displayInTimeFormatItem);
             ContextMenuStrip = contextMenuStrip;
+            ContextMenuStrip.Opening += (s, e) => {
+                if (preventContextMenuStrip == true)
+                {
+                    e.Cancel = true;
+                    preventContextMenuStrip = false;
+                }
+            };
 
             // Update
             UpdateGraph();
@@ -170,7 +186,7 @@ namespace Pt5Viewer.Views
 
         public void LoadLineItem(double scrollMaxX)
         {
-            lineItem = gp.AddCurve("Current", ppl, Color.Orange, SymbolType.None);
+            lineItem = gp.AddCurve("Current", ppl, Color.DarkOrange, SymbolType.None);
             lineItem.IsY2Axis = true;
 
             ScrollMinX = 0;
@@ -211,6 +227,10 @@ namespace Pt5Viewer.Views
             ppl.Clear();
             gp.CurveList.Remove(lineItem);
             lineItem = null;
+
+            _isDragging = false;
+            gp.GraphObjList.Remove(_dragBox);
+            _dragBox = null;
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -223,6 +243,86 @@ namespace Pt5Viewer.Views
         private void GraphView_ScrollDoneEvent(ZedGraphControl sender, ScrollBar scrollBar, ZoomState oldState, ZoomState newState)
         {
             ScrollEventDone?.Invoke(this, new ScrollEventArgs(sender.GraphPane.XAxis.Scale.Min));
+        }
+
+        private bool GraphView_MouseDownEvent(ZedGraphControl sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (_dragBox != null)
+                {
+                    gp.GraphObjList.Remove(_dragBox);
+                    _dragBox = null;
+                    Invalidate();
+
+                    preventContextMenuStrip = true;
+
+                    return true;
+                }
+            }
+
+            using (Graphics g = CreateGraphics())
+            {
+                if (MasterPane.FindNearestPaneObject(e.Location, g, out GraphPane graphPane, out object nearestObj, out int index))
+                {
+
+                }
+            }
+
+            if (e.Button == MouseButtons.Left)
+            {
+                _isDragging = true;
+                _startDragPoint = new PointF(e.X, e.Y);
+            }
+
+            return false;
+        }
+
+        private bool GraphView_MouseMoveEvent(ZedGraphControl sender, MouseEventArgs e)
+        {
+            if (_isDragging)
+            {
+                _endDragPoint = new PointF(e.X, e.Y);
+
+                if (_dragBox != null)
+                {
+                    gp.GraphObjList.Remove(_dragBox);
+                }
+
+                double sx, sy, ex, ey;
+                gp.ReverseTransform(_startDragPoint, out sx, out sy);
+                gp.ReverseTransform(_endDragPoint, out ex, out ey);
+
+                double xMin = Math.Max(gp.XAxis.Scale.Min, Math.Min(sx, ex));
+                double xMax = Math.Min(gp.XAxis.Scale.Max, Math.Max(sx, ex));
+
+                _dragBox = new BoxObj(xMin, 0, xMax - xMin, 1, Color.Black, Color.FromArgb(50, Color.Orange));
+                _dragBox.Location.CoordinateFrame = CoordType.XScaleYChartFraction;
+                _dragBox.IsClippedToChartRect = true;
+                _dragBox.ZOrder = ZOrder.A_InFront;
+                _dragBox.Border.Style = System.Drawing.Drawing2D.DashStyle.Dash;
+                _dragBox.Border.Width = 1.0f;
+
+                gp.GraphObjList.Add(_dragBox);
+                Invalidate();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GraphView_MouseUpEvent(ZedGraphControl sender, MouseEventArgs e)
+        {
+            if (_isDragging)
+            {
+                _isDragging = false;
+                Invalidate();
+
+                return true;
+            }
+
+            return false;
         }
     }
 
