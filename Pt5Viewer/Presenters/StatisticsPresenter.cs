@@ -78,7 +78,7 @@ namespace Pt5Viewer.Presenters
 
         public void UpdateStats()
         {
-            if (model != null)
+            if (model != null && model.IsStarted)
             {
                 UpdateTimeValue(model.TimeScaleMax);
                 view.SamplesValue = model.SampleCount.ToString();
