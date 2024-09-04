@@ -29,9 +29,11 @@ namespace Pt5Viewer.Views
 
         event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
 
-        event EventHandler<ScrollEventArgs> ScrollEventDone;
+        event EventHandler<OffsetChangedEventArgs> ScrollEventDone;
 
         event EventHandler<SelectionRangeChangedEventArgs> SelectionRangeChanged;
+
+        event EventHandler<OffsetChangedEventArgs> CurrentOffsetChanged;
 
         string XAxisFormattedLabel { get; set; }
 

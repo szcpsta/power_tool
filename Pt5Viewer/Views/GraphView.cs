@@ -23,19 +23,26 @@ namespace Pt5Viewer.Views
         LineItem lineItem;
 
         #region DragBox
-        private PointF _startDragPoint;
-        private PointF _endDragPoint;
-        private BoxObj _dragBox;
-        private bool _isDragging = false;
+        private bool isDragging = false;
+        private PointF startDragPoint;
+        private PointF endDragPoint;
+        private BoxObj dragBox;
         #endregion DragBox
+
+        #region Y2 Panning
+        private bool isPanning = false;
+        private double initialY2Offset;
+        private PointF initialMousePosition;
+        #endregion Y2 Panning
 
         private bool preventContextMenuStrip = false;
 
         public event MouseEventHandler TimeOffsetChanged;
         public event EventHandler<ScaleFormatEventArgs> ScaleFormatEventTriggered;
         public event EventHandler<DisplayFormatEventArgs> DisplayFormatChanged;
-        public event EventHandler<ScrollEventArgs> ScrollEventDone;
+        public event EventHandler<OffsetChangedEventArgs> ScrollEventDone;
         public event EventHandler<SelectionRangeChangedEventArgs> SelectionRangeChanged;
+        public event EventHandler<OffsetChangedEventArgs> CurrentOffsetChanged;
 
         public string XAxisFormattedLabel { get; set; }
 
@@ -59,6 +66,9 @@ namespace Pt5Viewer.Views
 
             IsEnableHZoom = false;
             IsEnableVZoom = false;
+
+            IsEnableHPan = false;
+            IsEnableVPan = false;
 
             // Set Title
             gp.Title.Text = "Measured Power Data";
@@ -231,9 +241,11 @@ namespace Pt5Viewer.Views
             gp.CurveList.Remove(lineItem);
             lineItem = null;
 
-            _isDragging = false;
-            gp.GraphObjList.Remove(_dragBox);
-            _dragBox = null;
+            isDragging = false;
+            gp.GraphObjList.Remove(dragBox);
+            dragBox = null;
+
+            isPanning = false;
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -271,20 +283,20 @@ namespace Pt5Viewer.Views
 
         private void GraphView_ScrollDoneEvent(ZedGraphControl sender, ScrollBar scrollBar, ZoomState oldState, ZoomState newState)
         {
-            ScrollEventDone?.Invoke(this, new ScrollEventArgs(sender.GraphPane.XAxis.Scale.Min));
+            ScrollEventDone?.Invoke(this, new OffsetChangedEventArgs(sender.GraphPane.XAxis.Scale.Min));
         }
 
         private bool GraphView_MouseDownEvent(ZedGraphControl sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                if (_dragBox != null)
+                if (dragBox != null)
                 {
-                    gp.GraphObjList.Remove(_dragBox);
-                    _dragBox = null;
+                    gp.GraphObjList.Remove(dragBox);
+                    dragBox = null;
                     Invalidate();
 
-                    _isDragging = false;
+                    isDragging = false;
 
                     SelectionRangeChanged?.Invoke(this, null);
                     preventContextMenuStrip = true;
@@ -297,14 +309,21 @@ namespace Pt5Viewer.Views
             {
                 if (MasterPane.FindNearestPaneObject(e.Location, g, out GraphPane graphPane, out object nearestObj, out int index))
                 {
+                    if (nearestObj is Y2Axis)
+                    {
+                        isPanning = true;
+                        initialMousePosition = new PointF(e.X, e.Y);
+                        initialY2Offset = gp.Y2Axis.Scale.Min;
 
+                        return true;
+                    }
                 }
             }
 
             if (e.Button == MouseButtons.Left)
             {
-                _isDragging = true;
-                _startDragPoint = new PointF(e.X, e.Y);
+                isDragging = true;
+                startDragPoint = new PointF(e.X, e.Y);
 
                 return true;
             }
@@ -314,30 +333,42 @@ namespace Pt5Viewer.Views
 
         private bool GraphView_MouseMoveEvent(ZedGraphControl sender, MouseEventArgs e)
         {
-            if (_isDragging)
+            if (isDragging)
             {
-                _endDragPoint = new PointF(e.X, e.Y);
+                endDragPoint = new PointF(e.X, e.Y);
 
-                if (_dragBox != null)
+                if (dragBox != null)
                 {
-                    gp.GraphObjList.Remove(_dragBox);
+                    gp.GraphObjList.Remove(dragBox);
                 }
 
                 double sx, sy, ex, ey;
-                gp.ReverseTransform(_startDragPoint, out sx, out sy);
-                gp.ReverseTransform(_endDragPoint, out ex, out ey);
+                gp.ReverseTransform(startDragPoint, out sx, out sy);
+                gp.ReverseTransform(endDragPoint, out ex, out ey);
 
                 double xMin = Math.Max(gp.XAxis.Scale.Min, Math.Min(sx, ex));
                 double xMax = Math.Min(gp.XAxis.Scale.Max, Math.Max(sx, ex));
 
-                _dragBox = new BoxObj(xMin, 0, xMax - xMin, 1, Color.Black, Color.FromArgb(50, Color.Orange));
-                _dragBox.Location.CoordinateFrame = CoordType.XScaleYChartFraction;
-                _dragBox.IsClippedToChartRect = true;
-                _dragBox.ZOrder = ZOrder.A_InFront;
-                _dragBox.Border.Style = System.Drawing.Drawing2D.DashStyle.Dash;
-                _dragBox.Border.Width = 1.0f;
+                dragBox = new BoxObj(xMin, 0, xMax - xMin, 1, Color.Black, Color.FromArgb(50, Color.Orange));
+                dragBox.Location.CoordinateFrame = CoordType.XScaleYChartFraction;
+                dragBox.IsClippedToChartRect = true;
+                dragBox.ZOrder = ZOrder.A_InFront;
+                dragBox.Border.Style = System.Drawing.Drawing2D.DashStyle.Dash;
+                dragBox.Border.Width = 1.0f;
 
-                gp.GraphObjList.Add(_dragBox);
+                gp.GraphObjList.Add(dragBox);
+                Invalidate();
+
+                return true;
+            }
+
+            if (isPanning)
+            {
+                double deltaY = initialMousePosition.Y - e.Y;
+                double scaleFactor = (gp.Y2Axis.Scale.Max - gp.Y2Axis.Scale.Min) / gp.Rect.Height;
+
+                CurrentOffsetChanged?.Invoke(this, new OffsetChangedEventArgs(initialY2Offset - deltaY * scaleFactor));
+
                 Invalidate();
 
                 return true;
@@ -348,12 +379,12 @@ namespace Pt5Viewer.Views
 
         private bool GraphView_MouseUpEvent(ZedGraphControl sender, MouseEventArgs e)
         {
-            if (_isDragging)
+            if (isDragging)
             {
-                if (_dragBox != null)
+                if (dragBox != null)
                 {
-                    int x1Index = GetIndexOf(_dragBox.Location.X1);
-                    int x2Index = GetIndexOf(_dragBox.Location.X2);
+                    int x1Index = GetIndexOf(dragBox.Location.X1);
+                    int x2Index = GetIndexOf(dragBox.Location.X2);
 
                     int count = x2Index - x1Index;
                     int missingCount = 0;
@@ -375,11 +406,13 @@ namespace Pt5Viewer.Views
                     }
                 }
 
-                _isDragging = false;
+                isDragging = false;
                 Invalidate();
 
                 return true;
             }
+
+            isPanning = false;
 
             return false;
         }
@@ -411,11 +444,11 @@ namespace Pt5Viewer.Views
         }
     }
 
-    public class ScrollEventArgs : EventArgs
+    public class OffsetChangedEventArgs : EventArgs
     {
         public double Val { get; }
 
-        public ScrollEventArgs(double val)
+        public OffsetChangedEventArgs(double val)
         {
             Val = val;
         }

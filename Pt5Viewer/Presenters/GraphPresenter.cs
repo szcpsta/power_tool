@@ -57,6 +57,11 @@ namespace Pt5Viewer.Presenters
             {
                 SelectionRangeChanged?.Invoke(s, e);
             };
+
+            view.CurrentOffsetChanged += (s, e) =>
+            {
+                PresenterManager.CurrentOffsetChanged(e.Val);
+            };
         }
 
         public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)
