@@ -284,6 +284,8 @@ namespace Pt5Viewer.Views
                     _dragBox = null;
                     Invalidate();
 
+                    _isDragging = false;
+
                     SelectionRangeChanged?.Invoke(this, null);
                     preventContextMenuStrip = true;
 
@@ -303,6 +305,8 @@ namespace Pt5Viewer.Views
             {
                 _isDragging = true;
                 _startDragPoint = new PointF(e.X, e.Y);
+
+                return true;
             }
 
             return false;
@@ -346,26 +350,29 @@ namespace Pt5Viewer.Views
         {
             if (_isDragging)
             {
-                int x1Index = GetIndexOf(_dragBox.Location.X1);
-                int x2Index = GetIndexOf(_dragBox.Location.X2);
-
-                int count = x2Index - x1Index;
-                int missingCount = 0;
-
-                if(count != 0)
+                if (_dragBox != null)
                 {
-                    double sum = 0;
-                    for (int i = x1Index; i < x2Index; i++)
-                    {
-                        if (ppl[i].Y == Constant.Missing)
-                        {
-                            missingCount++;
-                            continue;
-                        }
-                        sum += ppl[i].Y;
-                    }
+                    int x1Index = GetIndexOf(_dragBox.Location.X1);
+                    int x2Index = GetIndexOf(_dragBox.Location.X2);
 
-                    SelectionRangeChanged?.Invoke(this, new SelectionRangeChangedEventArgs(ppl[x2Index].X - ppl[x1Index].X, count, sum / (count - missingCount)));
+                    int count = x2Index - x1Index;
+                    int missingCount = 0;
+
+                    if (count != 0)
+                    {
+                        double sum = 0;
+                        for (int i = x1Index; i < x2Index; i++)
+                        {
+                            if (ppl[i].Y == Constant.Missing)
+                            {
+                                missingCount++;
+                                continue;
+                            }
+                            sum += ppl[i].Y;
+                        }
+
+                        SelectionRangeChanged?.Invoke(this, new SelectionRangeChangedEventArgs(ppl[x2Index].X - ppl[x1Index].X, count, sum / (count - missingCount)));
+                    }
                 }
 
                 _isDragging = false;
