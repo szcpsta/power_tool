@@ -21,6 +21,7 @@ namespace Pt5Viewer
         ScalePresenter scalePresenter;
         GraphPresenter graphPresenter;
         StatisticsPresenter statisticsPresenter;
+        BookmarkPresenter bookmarkPresenter;
 
         public MainForm()
         {
@@ -38,6 +39,9 @@ namespace Pt5Viewer
 
             statisticsPresenter = new StatisticsPresenter(statisticsView);
             presenterManager.AddPresenter(statisticsPresenter);
+
+            bookmarkPresenter = new BookmarkPresenter(bookmarkView);
+            presenterManager.AddPresenter(bookmarkPresenter);
 
             graphPresenter.SelectionRangeChanged += (s, e) =>
             {

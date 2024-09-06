@@ -35,6 +35,7 @@ namespace Pt5Viewer
             this.graphView = new Pt5Viewer.Views.GraphView();
             this.scaleView = new Pt5Viewer.Views.ScaleView();
             this.statisticsView = new Pt5Viewer.Views.StatisticsView();
+            this.bookmarkView = new Pt5Viewer.Views.BookmarkView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -60,9 +61,10 @@ namespace Pt5Viewer
             //
             // splitContainer1.Panel2
             //
+            this.splitContainer1.Panel2.Controls.Add(this.bookmarkView);
             this.splitContainer1.Panel2.Controls.Add(this.statisticsView);
             this.splitContainer1.Size = new System.Drawing.Size(1008, 729);
-            this.splitContainer1.SplitterDistance = 767;
+            this.splitContainer1.SplitterDistance = 766;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
@@ -84,8 +86,8 @@ namespace Pt5Viewer
             // splitContainer2.Panel2
             //
             this.splitContainer2.Panel2.Controls.Add(this.scaleView);
-            this.splitContainer2.Size = new System.Drawing.Size(767, 729);
-            this.splitContainer2.SplitterDistance = 538;
+            this.splitContainer2.Size = new System.Drawing.Size(766, 729);
+            this.splitContainer2.SplitterDistance = 541;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
@@ -93,17 +95,23 @@ namespace Pt5Viewer
             // graphView
             //
             this.graphView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.graphView.IsEnableHPan = false;
             this.graphView.IsEnableHZoom = false;
+            this.graphView.IsEnableVPan = false;
             this.graphView.IsEnableVZoom = false;
+            this.graphView.IsShowHScrollBar = true;
             this.graphView.Location = new System.Drawing.Point(0, 0);
             this.graphView.Name = "graphView";
             this.graphView.ScrollGrace = 0D;
+            this.graphView.ScrollMaxX = 60000D;
             this.graphView.ScrollMaxY = 0D;
             this.graphView.ScrollMaxY2 = 0D;
+            this.graphView.ScrollMinX = 0D;
             this.graphView.ScrollMinY = 0D;
             this.graphView.ScrollMinY2 = 0D;
-            this.graphView.Size = new System.Drawing.Size(763, 534);
+            this.graphView.Size = new System.Drawing.Size(762, 537);
             this.graphView.TabIndex = 0;
+            this.graphView.XAxisFormattedLabel = null;
             //
             // scaleView
             //
@@ -115,15 +123,27 @@ namespace Pt5Viewer
             this.scaleView.Name = "scaleView";
             this.scaleView.Size = new System.Drawing.Size(380, 100);
             this.scaleView.TabIndex = 0;
+            this.scaleView.TimeOffset = "";
             //
             // statisticsView
             //
+            this.statisticsView.AverageCurrentValue = "";
             this.statisticsView.CurrentUnit = "mA";
             this.statisticsView.Location = new System.Drawing.Point(4, 10);
             this.statisticsView.Name = "statisticsView";
+            this.statisticsView.SamplesValue = "";
             this.statisticsView.Size = new System.Drawing.Size(230, 150);
             this.statisticsView.TabIndex = 0;
             this.statisticsView.TimeUnit = "ms";
+            this.statisticsView.TimeValue = "";
+            this.statisticsView.Title = "CAPTURE STATS";
+            //
+            // bookmarkView
+            //
+            this.bookmarkView.Location = new System.Drawing.Point(3, 166);
+            this.bookmarkView.Name = "bookmarkView";
+            this.bookmarkView.Size = new System.Drawing.Size(230, 150);
+            this.bookmarkView.TabIndex = 1;
             //
             // MainForm
             //
@@ -156,6 +176,7 @@ namespace Pt5Viewer
         private Views.ScaleView scaleView;
         private Views.GraphView graphView;
         private Views.StatisticsView statisticsView;
+        private Views.BookmarkView bookmarkView;
     }
 }
 

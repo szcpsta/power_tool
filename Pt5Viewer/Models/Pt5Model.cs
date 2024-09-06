@@ -12,6 +12,8 @@ namespace Pt5Viewer.Models
     {
         private Pt5Parser parser = null;
 
+        public List<double> bookmarkList = new List<double>();
+
         public double TimeScaleMax => parser != null ?
                                     parser.TimeScaleMax : 60_000;    // s
 
@@ -72,6 +74,8 @@ namespace Pt5Viewer.Models
                 parser.Dispose();
                 parser = null;
             }
+
+            bookmarkList.Clear();
         }
     }
 }
