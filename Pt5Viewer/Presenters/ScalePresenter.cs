@@ -55,7 +55,7 @@ namespace Pt5Viewer.Presenters
                 if (PresenterManager.IsDisplayInTimeFormat == true)
                 {
                     DateTime datetime;
-                    if (DateTime.TryParseExact(view.TimeOffset, "HH:mm:ss.ffff", CultureInfo.InvariantCulture, DateTimeStyles.None, out datetime) == true)
+                    if (DateTime.TryParseExact(view.TimeOffset, Constant.DATETIME_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.None, out datetime) == true)
                     {
                         PresenterManager.TimeOffsetChanged(PresenterManager.GetTimestamp(datetime));
                     }
@@ -108,11 +108,11 @@ namespace Pt5Viewer.Presenters
         {
             if (PresenterManager.IsDisplayInTimeFormat == true)
             {
-                view.TimeOffset = $"{PresenterManager.GetDateTime(offset).ToString("HH:mm:ss.ffff")}";
+                view.TimeOffset = PresenterManager.GetDateTime(offset).ToString(Constant.DATETIME_FORMAT);
             }
             else
             {
-                view.TimeOffset = (offset * PresenterManager.TimeConversionFactor).ToString("F2");
+                view.TimeOffset = (offset * PresenterManager.TimeConversionFactor).ToString(Constant.NUMBER_FORMAT);
             }
         }
 
@@ -125,7 +125,7 @@ namespace Pt5Viewer.Presenters
 
         public void UpdateCurrentOffset(double offset)
         {
-            view.CurrentOffset = offset.ToString("F2");
+            view.CurrentOffset = offset.ToString(Constant.NUMBER_FORMAT);
         }
 
         public void UpdateDisplayFormat(bool isDisplayInTimeFormat)

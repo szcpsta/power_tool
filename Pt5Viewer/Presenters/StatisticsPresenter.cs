@@ -82,19 +82,19 @@ namespace Pt5Viewer.Presenters
             {
                 UpdateTimeValue(model.TimeScaleMax);
                 view.SamplesValue = model.SampleCount.ToString();
-                view.AverageCurrentValue = model.AverageCurrent.ToString("F2");
+                view.AverageCurrentValue = model.AverageCurrent.ToString(Constant.NUMBER_FORMAT);
             }
         }
         public void UpdateStats(double time, long samples, double averageCurrent)
         {
             UpdateTimeValue(time);
             view.SamplesValue = samples.ToString();
-            view.AverageCurrentValue = averageCurrent.ToString("F2");
+            view.AverageCurrentValue = averageCurrent.ToString(Constant.NUMBER_FORMAT);
         }
 
         private void UpdateTimeValue(double timespan)
         {
-            view.TimeValue = (timespan * PresenterManager.TimeConversionFactor).ToString("F2");
+            view.TimeValue = (timespan * PresenterManager.TimeConversionFactor).ToString(Constant.NUMBER_FORMAT);
         }
     }
 }

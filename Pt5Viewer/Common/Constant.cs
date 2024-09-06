@@ -20,6 +20,9 @@ namespace Pt5Viewer.Common
 
         public static readonly double Missing = Double.MaxValue;
 
+        public const string DATETIME_FORMAT = "HH:mm:ss.ffff";
+        public const string NUMBER_FORMAT = "F2";
+
         static Constant()
         {
             CurrentUnitList = new List<string> { "A", "mA", "uA" };
