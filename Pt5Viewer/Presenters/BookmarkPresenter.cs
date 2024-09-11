@@ -26,24 +26,27 @@ namespace Pt5Viewer.Presenters
             view = bookmarkView;
             view.Add += (s, e) =>
             {
-                model.bookmarkList.Add(PresenterManager.TimeOffset);
-                view.VirtualListSize = model.bookmarkList.Count();
+                int index = model.AddBookmark(PresenterManager.TimeOffset);
+                Clear();
+                view.VirtualListSize = model.BookmarkList.Count();
+
+                view.SelectItem(index);
             };
 
             view.Remove += (s, e) =>
             {
                 foreach (var index in e.OrderByDescending(i => i))
                 {
-                    model.bookmarkList.RemoveAt(index);
+                    model.RemoveBookmark(index);
                 }
 
                 Clear();
-                view.VirtualListSize = model.bookmarkList.Count();
+                view.VirtualListSize = model.BookmarkList.Count();
             };
 
             view.ItemDoubleClicked += (s, e) =>
             {
-                PresenterManager.TimeOffsetChanged(model.bookmarkList[e]);
+                PresenterManager.TimeOffsetChanged(model.GetX(model.BookmarkList[e]));
             };
 
             view.RetrieveVirtualItem += (s, e) =>
@@ -125,7 +128,7 @@ namespace Pt5Viewer.Presenters
         private ListViewItem SetListViewItem(int index)
         {
             ListViewItem lvi = new ListViewItem();
-            lvi.SubItems.Add((model.bookmarkList[index] * PresenterManager.TimeConversionFactor).ToString("F2"));
+            lvi.SubItems.Add((model.GetX(model.BookmarkList[index]) * PresenterManager.TimeConversionFactor).ToString("F2"));
 
             return lvi;
         }
@@ -134,6 +137,7 @@ namespace Pt5Viewer.Presenters
         {
             startOffset = -1;
             cacheList.Clear();
+            view.VirtualListSize = model.BookmarkList.Count();
         }
 
         public override void Restart()
@@ -144,6 +148,7 @@ namespace Pt5Viewer.Presenters
         public override void ModelClosing()
         {
             model = null;
+            view.DisableView();
         }
 
         public override void ModelCreated(Pt5Model pt5Model)
@@ -153,7 +158,7 @@ namespace Pt5Viewer.Presenters
 
         public override void ModelStarted()
         {
-
+            view.EnableView();
         }
 
         public void UpdateTimeScale(TimeUnitEnum unit, TimeUnitsPerTickEnum unitsPerTick, TimeNumberOfTicksEnum numberOfTicks)

@@ -12,7 +12,9 @@ namespace Pt5Viewer.Models
     {
         private Pt5Parser parser = null;
 
-        public List<double> bookmarkList = new List<double>();
+        private List<long> bookmarkList = new List<long>();
+
+        public IReadOnlyList<long> BookmarkList => bookmarkList;
 
         public double TimeScaleMax => parser != null ?
                                     parser.TimeScaleMax : 60_000;    // s
@@ -42,6 +44,31 @@ namespace Pt5Viewer.Models
         {
             long temp = parser.GetIndexFromTimestamp(timestamp);
             return temp >= SampleCount ? SampleCount - 1 : temp;
+        }
+
+        public int AddBookmark(double timestamp)
+        {
+            long bookmarkIndex = GetIndexFromTimestamp(timestamp);
+
+            int index = bookmarkList.BinarySearch(bookmarkIndex);
+
+            if (index >= 0)
+            {
+                // 값이 리스트에 있는 경우
+                return index;
+            }
+            else
+            {
+                int insertIndex = ~index; // BinarySearch가 음수 값을 반환했으므로 그 값을 반전시켜 삽입할 인덱스를 얻음
+                bookmarkList.Insert(insertIndex, bookmarkIndex); // 리스트에 값을 삽입
+
+                return insertIndex;
+            }
+        }
+
+        public void RemoveBookmark(int index)
+        {
+            bookmarkList.RemoveAt(index);
         }
 
         public bool SetParser(string pt5FilePath)

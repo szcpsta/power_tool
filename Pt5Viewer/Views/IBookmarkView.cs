@@ -11,7 +11,7 @@ namespace Pt5Viewer.Views
     public interface IBookmarkView
     {
         event EventHandler Add;
-        
+
         event EventHandler<IEnumerable<int>> Remove;
 
         event EventHandler<int> ItemDoubleClicked;
@@ -23,6 +23,12 @@ namespace Pt5Viewer.Views
 
         event EventHandler<CacheVirtualItemsEventArgs> CacheVirtualItems;
         #endregion Virtual Mode
+
+        void EnableView();
+
+        void DisableView();
+
+        void SelectItem(int index);
 
         void RefreshView();
     }

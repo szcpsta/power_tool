@@ -70,5 +70,29 @@ namespace Pt5Viewer.Views
         {
             Remove?.Invoke(sender, listView.SelectedIndices.Cast<int>());
         }
+
+        public void EnableView()
+        {
+            toolStripButtonAdd.Enabled = true;
+            toolStripButtonRemove.Enabled = true;
+            listView.Enabled = true;
+        }
+
+        public void DisableView()
+        {
+            toolStripButtonAdd.Enabled = false;
+            toolStripButtonRemove.Enabled = false;
+            listView.Enabled = false;
+        }
+
+        public void SelectItem(int index)
+        {
+            listView.SelectedIndices.Clear();
+
+            listView.Items[index].Selected = true;
+            listView.Items[index].Focused = true;
+
+            listView.EnsureVisible(index);
+        }
     }
 }
