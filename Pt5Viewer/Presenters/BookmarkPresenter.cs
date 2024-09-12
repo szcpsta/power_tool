@@ -46,7 +46,7 @@ namespace Pt5Viewer.Presenters
 
             view.ItemDoubleClicked += (s, e) =>
             {
-                PresenterManager.TimeOffsetChanged(model.GetX(model.BookmarkList[e]));
+                PresenterManager.TimeOffsetChanged(model.BookmarkList[e]);
             };
 
             view.RetrieveVirtualItem += (s, e) =>
@@ -127,8 +127,18 @@ namespace Pt5Viewer.Presenters
 
         private ListViewItem SetListViewItem(int index)
         {
+            string text;
+            if (PresenterManager.IsDisplayInTimeFormat)
+            {
+                text = PresenterManager.GetDateTime(model.BookmarkList[index]).ToString("HH:mm:ss.ffff");
+            }
+            else
+            {
+                text = (model.BookmarkList[index] * PresenterManager.TimeConversionFactor).ToString("F2");
+            }
+
             ListViewItem lvi = new ListViewItem();
-            lvi.SubItems.Add((model.GetX(model.BookmarkList[index]) * PresenterManager.TimeConversionFactor).ToString("F2"));
+            lvi.SubItems.Add(text);
 
             return lvi;
         }
@@ -184,7 +194,8 @@ namespace Pt5Viewer.Presenters
 
         public void UpdateDisplayFormat(bool isDisplayInTimeFormat)
         {
-            //throw new NotImplementedException();
+            Clear();
+            view.RefreshView();
         }
     }
 }

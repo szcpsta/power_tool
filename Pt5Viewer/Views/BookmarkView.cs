@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Pt5Viewer.Common;
+
 namespace Pt5Viewer.Views
 {
     public partial class BookmarkView : UserControl, IBookmarkView
@@ -28,6 +30,7 @@ namespace Pt5Viewer.Views
 
             listView.FullRowSelect = true;
             listView.MultiSelect = true;
+            listView.OwnerDraw = true;
 
             listView.BeginUpdate();
 
@@ -93,6 +96,39 @@ namespace Pt5Viewer.Views
             listView.Items[index].Focused = true;
 
             listView.EnsureVisible(index);
+        }
+
+        private void listView_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
+
+        private void listView_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            Brush brush;
+            Color foreColor;
+
+            if (e.Item.Selected == true)
+            {
+                brush = new SolidBrush(Constant.DefaultBackColor);
+                foreColor = Constant.DefaultForeColor;
+            }
+            else
+            {
+                brush = Brushes.White;
+                foreColor = Color.Black;
+            }
+
+            e.Graphics.FillRectangle(brush, e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 3);
+            TextRenderer.DrawText(e.Graphics, e.SubItem.Text, listView.Font, e.Bounds, foreColor, TextFormatFlags.Default);
+
+            if (e.ColumnIndex == 0)
+            {
+                //if (bookmarkList[e.ItemIndex].Equals(targetItem))
+                //{
+                //    e.Graphics.DrawImage(Properties.Resources.origin_trace, e.Bounds.X, e.Bounds.Y);
+                //}
+            }
         }
     }
 }

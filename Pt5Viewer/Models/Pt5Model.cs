@@ -12,9 +12,9 @@ namespace Pt5Viewer.Models
     {
         private Pt5Parser parser = null;
 
-        private List<long> bookmarkList = new List<long>();
+        private List<double> bookmarkList = new List<double>();
 
-        public IReadOnlyList<long> BookmarkList => bookmarkList;
+        public IReadOnlyList<double> BookmarkList => bookmarkList;
 
         public double TimeScaleMax => parser != null ?
                                     parser.TimeScaleMax : 60_000;    // s
@@ -48,9 +48,7 @@ namespace Pt5Viewer.Models
 
         public int AddBookmark(double timestamp)
         {
-            long bookmarkIndex = GetIndexFromTimestamp(timestamp);
-
-            int index = bookmarkList.BinarySearch(bookmarkIndex);
+            int index = bookmarkList.BinarySearch(timestamp);
 
             if (index >= 0)
             {
@@ -60,7 +58,7 @@ namespace Pt5Viewer.Models
             else
             {
                 int insertIndex = ~index; // BinarySearch가 음수 값을 반환했으므로 그 값을 반전시켜 삽입할 인덱스를 얻음
-                bookmarkList.Insert(insertIndex, bookmarkIndex); // 리스트에 값을 삽입
+                bookmarkList.Insert(insertIndex, timestamp); // 리스트에 값을 삽입
 
                 return insertIndex;
             }

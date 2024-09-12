@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,9 @@ namespace Pt5Viewer.Common
 
         public const string DATETIME_FORMAT = "HH:mm:ss.ffff";
         public const string NUMBER_FORMAT = "F2";
+
+        public static readonly Color DefaultBackColor = Color.FromArgb(51, 153, 255);
+        public static readonly Color DefaultForeColor = Color.FromArgb(255, 255, 255);
 
         static Constant()
         {
