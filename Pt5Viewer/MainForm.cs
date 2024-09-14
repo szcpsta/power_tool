@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -72,6 +73,7 @@ namespace Pt5Viewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            timer.Start();
             presenterManager.Start();
         }
 
@@ -104,6 +106,14 @@ namespace Pt5Viewer
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            Process proc = Process.GetCurrentProcess();
+            ProcessThreadCollection ptc = proc.Threads;
+
+            toolStripStatusLabelThreadInfo.Text = $"#Thread : {ptc.Count}";
         }
     }
 }

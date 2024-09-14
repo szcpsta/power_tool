@@ -39,6 +39,9 @@ namespace Pt5Viewer
             this.scaleView = new Pt5Viewer.Views.ScaleView();
             this.bookmarkView = new Pt5Viewer.Views.BookmarkView();
             this.statisticsView = new Pt5Viewer.Views.StatisticsView();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.toolStripStatusLabelThreadInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -67,6 +70,8 @@ namespace Pt5Viewer
             //
             // statusStrip
             //
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelThreadInfo});
             this.statusStrip.Location = new System.Drawing.Point(0, 707);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1008, 22);
@@ -175,6 +180,16 @@ namespace Pt5Viewer
             this.statisticsView.TimeValue = "";
             this.statisticsView.Title = "CAPTURE STATS";
             //
+            // timer
+            //
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            //
+            // toolStripStatusLabelThreadInfo
+            //
+            this.toolStripStatusLabelThreadInfo.Name = "toolStripStatusLabelThreadInfo";
+            this.toolStripStatusLabelThreadInfo.Size = new System.Drawing.Size(0, 17);
+            //
             // MainForm
             //
             this.AllowDrop = true;
@@ -191,6 +206,8 @@ namespace Pt5Viewer
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -215,6 +232,8 @@ namespace Pt5Viewer
         private Views.ScaleView scaleView;
         private Views.BookmarkView bookmarkView;
         private Views.StatisticsView statisticsView;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelThreadInfo;
     }
 }
 
