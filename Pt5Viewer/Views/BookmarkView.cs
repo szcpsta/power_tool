@@ -13,7 +13,7 @@ using Pt5Viewer.Common;
 
 namespace Pt5Viewer.Views
 {
-    public partial class BookmarkView : UserControl, IBookmarkView
+    public partial class BookmarkView : AltUserControl, IBookmarkView
     {
         public int VirtualListSize { get => listView.VirtualListSize; set => listView.VirtualListSize = value; }
 
@@ -120,7 +120,7 @@ namespace Pt5Viewer.Views
             }
 
             e.Graphics.FillRectangle(brush, e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 3);
-            TextRenderer.DrawText(e.Graphics, e.SubItem.Text, listView.Font, e.Bounds, foreColor, TextFormatFlags.Default);
+            TextRenderer.DrawText(e.Graphics, e.SubItem.Text, Font, e.Bounds, foreColor, TextFormatFlags.Default);
 
             if (e.ColumnIndex == 0)
             {

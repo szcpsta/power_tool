@@ -15,8 +15,6 @@ namespace Pt5Viewer.Common
             VirtualMode = true;
 
             View = View.Details;
-
-            Font = new System.Drawing.Font("맑은 고딕", 9);
         }
     }
 }
