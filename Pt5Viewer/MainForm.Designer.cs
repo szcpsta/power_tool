@@ -30,12 +30,15 @@ namespace Pt5Viewer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.graphView = new Pt5Viewer.Views.GraphView();
             this.scaleView = new Pt5Viewer.Views.ScaleView();
-            this.statisticsView = new Pt5Viewer.Views.StatisticsView();
             this.bookmarkView = new Pt5Viewer.Views.BookmarkView();
+            this.statisticsView = new Pt5Viewer.Views.StatisticsView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -46,13 +49,37 @@ namespace Pt5Viewer
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             //
+            // menuStrip
+            //
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1008, 24);
+            this.menuStrip.TabIndex = 0;
+            this.menuStrip.Text = "menuStrip1";
+            //
+            // toolStrip
+            //
+            this.toolStrip.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(1008, 25);
+            this.toolStrip.TabIndex = 1;
+            this.toolStrip.Text = "toolStrip1";
+            //
+            // statusStrip
+            //
+            this.statusStrip.Location = new System.Drawing.Point(0, 707);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1008, 22);
+            this.statusStrip.TabIndex = 2;
+            this.statusStrip.Text = "statusStrip1";
+            //
             // splitContainer1
             //
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
             this.splitContainer1.Name = "splitContainer1";
             //
             // splitContainer1.Panel1
@@ -63,10 +90,10 @@ namespace Pt5Viewer
             //
             this.splitContainer1.Panel2.Controls.Add(this.bookmarkView);
             this.splitContainer1.Panel2.Controls.Add(this.statisticsView);
-            this.splitContainer1.Size = new System.Drawing.Size(1008, 729);
-            this.splitContainer1.SplitterDistance = 766;
+            this.splitContainer1.Size = new System.Drawing.Size(1008, 658);
+            this.splitContainer1.SplitterDistance = 772;
             this.splitContainer1.SplitterWidth = 1;
-            this.splitContainer1.TabIndex = 0;
+            this.splitContainer1.TabIndex = 3;
             this.splitContainer1.TabStop = false;
             //
             // splitContainer2
@@ -86,8 +113,8 @@ namespace Pt5Viewer
             // splitContainer2.Panel2
             //
             this.splitContainer2.Panel2.Controls.Add(this.scaleView);
-            this.splitContainer2.Size = new System.Drawing.Size(766, 729);
-            this.splitContainer2.SplitterDistance = 541;
+            this.splitContainer2.Size = new System.Drawing.Size(772, 658);
+            this.splitContainer2.SplitterDistance = 476;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.TabStop = false;
@@ -109,7 +136,7 @@ namespace Pt5Viewer
             this.graphView.ScrollMinX = 0D;
             this.graphView.ScrollMinY = 0D;
             this.graphView.ScrollMinY2 = 0D;
-            this.graphView.Size = new System.Drawing.Size(762, 537);
+            this.graphView.Size = new System.Drawing.Size(768, 472);
             this.graphView.TabIndex = 0;
             this.graphView.XAxisFormattedLabel = null;
             //
@@ -125,6 +152,16 @@ namespace Pt5Viewer
             this.scaleView.TabIndex = 0;
             this.scaleView.TimeOffset = "";
             //
+            // bookmarkView
+            //
+            this.bookmarkView.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.bookmarkView.Location = new System.Drawing.Point(3, 166);
+            this.bookmarkView.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.bookmarkView.Name = "bookmarkView";
+            this.bookmarkView.Size = new System.Drawing.Size(230, 150);
+            this.bookmarkView.TabIndex = 1;
+            this.bookmarkView.VirtualListSize = 0;
+            //
             // statisticsView
             //
             this.statisticsView.AverageCurrentValue = "";
@@ -138,13 +175,6 @@ namespace Pt5Viewer
             this.statisticsView.TimeValue = "";
             this.statisticsView.Title = "CAPTURE STATS";
             //
-            // bookmarkView
-            //
-            this.bookmarkView.Location = new System.Drawing.Point(3, 166);
-            this.bookmarkView.Name = "bookmarkView";
-            this.bookmarkView.Size = new System.Drawing.Size(230, 150);
-            this.bookmarkView.TabIndex = 1;
-            //
             // MainForm
             //
             this.AllowDrop = true;
@@ -152,6 +182,10 @@ namespace Pt5Viewer
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -166,17 +200,21 @@ namespace Pt5Viewer
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStrip toolStrip;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private Views.ScaleView scaleView;
         private Views.GraphView graphView;
-        private Views.StatisticsView statisticsView;
+        private Views.ScaleView scaleView;
         private Views.BookmarkView bookmarkView;
+        private Views.StatisticsView statisticsView;
     }
 }
 
