@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+
+using Pt5Viewer.Configuration.Preferences;
 
 namespace Pt5Viewer.Common
 {
@@ -26,6 +30,47 @@ namespace Pt5Viewer.Common
 
         public static readonly Color DefaultBackColor = Color.FromArgb(51, 153, 255);
         public static readonly Color DefaultForeColor = Color.FromArgb(255, 255, 255);
+
+        public static readonly Dictionary<ShortcutKeysTag, ShortcutKey> ShortcutKeyInfo = new Dictionary<ShortcutKeysTag, ShortcutKey>()
+        {
+            { ShortcutKeysTag.Close, new ShortcutKey("Close View", Keys.Control | Keys.X) },
+        };
+
+        public class ShortcutKey
+        {
+            private readonly string description;
+
+            private readonly Keys value;
+
+            public string Description => description;
+
+            public Keys Value => value;
+
+            public  ShortcutKey(string description, Keys value)
+            {
+                this.description = description;
+                this.value = value;
+            }
+        }
+
+        public static int Id
+        {
+            get
+            {
+                string processName = Process.GetCurrentProcess().ProcessName;
+
+                Process[] processes = Process.GetProcessesByName(processName);
+                if (processes.Length > 1)
+                {
+                    return Process.GetCurrentProcess().Id;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
 
         static Constant()
         {

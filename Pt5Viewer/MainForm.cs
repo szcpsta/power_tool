@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Pt5Viewer.Common;
+using Pt5Viewer.Configuration.Preferences;
 using Pt5Viewer.Presenters;
 
 namespace Pt5Viewer
@@ -60,31 +61,13 @@ namespace Pt5Viewer
         {
             Version version = Assembly.GetEntryAssembly().GetName().Version;
 
-            string title = $"[{Id}] {Application.ProductName} v{version.Major}.{version.Minor}.{version.Build}";
+            string title = $"[{Constant.Id}] {Application.ProductName} v{version.Major}.{version.Minor}.{version.Build}";
             if (version.Revision != 0)
             {
                 title = $"{title}.{version.Revision}";
             }
 
             Text = title;
-        }
-
-        public static int Id
-        {
-            get
-            {
-                string processName = Process.GetCurrentProcess().ProcessName;
-
-                Process[] processes = Process.GetProcessesByName(processName);
-                if (processes.Length > 1)
-                {
-                    return Process.GetCurrentProcess().Id;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -112,9 +95,12 @@ namespace Pt5Viewer
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == (Keys.Control | Keys.P))
+            if (keyData == PreferencesControl.ShortcutKeys[ShortcutKeysTag.Close])
             {
-                Console.WriteLine(presenterManager.ToString());
+                Dispose();
+                Close();
+
+                return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);

@@ -59,6 +59,9 @@
     <Compile Include="Common\Constant.cs" />
     <Compile Include="Common\IScaleSync.cs" />
     <Compile Include="Common\Util.cs" />
+    <Compile Include="Configuration\Preferences\ConfigurationControl.cs" />
+    <Compile Include="Configuration\Preferences\PreferencesControl.cs" />
+    <Compile Include="Configuration\Preferences\ShortcutKeyCollection.cs" />
     <Compile Include="Enums\TimeNumberOfTicksEnum.cs" />
     <Compile Include="Enums\TimeUnitEnum.cs" />
     <Compile Include="Enums\TimeUnitsPerTickEnum.cs" />
