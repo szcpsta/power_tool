@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using Pt5Viewer.Common;
 using Pt5Viewer.Configuration.Preferences;
 using Pt5Viewer.Presenters;
+using Pt5Viewer.Views;
 
 namespace Pt5Viewer
 {
@@ -114,6 +115,12 @@ namespace Pt5Viewer
             ProcessThreadCollection ptc = proc.Threads;
 
             toolStripStatusLabelThreadInfo.Text = $"#Thread : {ptc.Count}";
+        }
+
+        private void powerToolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PowerToolView powerToolView = new PowerToolView();
+            powerToolView.Show();
         }
     }
 }

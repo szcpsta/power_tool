@@ -61,6 +61,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DockContainer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\DockContainer.Designer.cs">
+      <DependentUpon>DockContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\DockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\DockForm.Designer.cs">
+      <DependentUpon>DockForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\AltUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,6 +123,12 @@
     <Compile Include="Views\IGraphView.cs" />
     <Compile Include="Views\IScaleView.cs" />
     <Compile Include="Views\IStatisticsView.cs" />
+    <Compile Include="Views\PowerToolView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PowerToolView.Designer.cs">
+      <DependentUpon>PowerToolView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\ScaleView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,6 +141,9 @@
     <Compile Include="Views\StatisticsView.Designer.cs">
       <DependentUpon>StatisticsView.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Common\DockContainer.resx">
+      <DependentUpon>DockContainer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\GraphView.resx">
       <DependentUpon>GraphView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PowerToolView.resx">
+      <DependentUpon>PowerToolView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ScaleView.resx">
       <DependentUpon>ScaleView.cs</DependentUpon>
