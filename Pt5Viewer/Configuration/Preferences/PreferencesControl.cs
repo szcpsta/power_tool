@@ -15,6 +15,8 @@ namespace Pt5Viewer.Configuration.Preferences
             Font,
         }
 
+        public static bool IsLoggingEnabled = true;
+
         public readonly static ShortcutKeyCollection DefaultShortcutKeys = new ShortcutKeyCollection();
 
         static private ShortcutKeyCollection shortcutKeys = new ShortcutKeyCollection(Field.ShortcutKeys.ToString());

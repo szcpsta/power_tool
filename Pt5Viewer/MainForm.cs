@@ -28,6 +28,8 @@ namespace Pt5Viewer
 
         public MainForm()
         {
+            Log.Info($"Program started. Process ID: {Process.GetCurrentProcess().Id}");
+
             InitializeComponent();
 
             SetTitle();
