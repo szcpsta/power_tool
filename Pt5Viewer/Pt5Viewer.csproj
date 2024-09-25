@@ -157,20 +157,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\BookmarkView.resx">
-      <DependentUpon>BookmarkView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\GraphView.resx">
-      <DependentUpon>GraphView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\PowerToolView.resx">
       <DependentUpon>PowerToolView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ScaleView.resx">
-      <DependentUpon>ScaleView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\StatisticsView.resx">
-      <DependentUpon>StatisticsView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
