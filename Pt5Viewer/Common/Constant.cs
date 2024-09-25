@@ -34,6 +34,7 @@ namespace Pt5Viewer.Common
         public static readonly Dictionary<ShortcutKeysTag, ShortcutKey> ShortcutKeyInfo = new Dictionary<ShortcutKeysTag, ShortcutKey>()
         {
             { ShortcutKeysTag.Close, new ShortcutKey("Close View", Keys.Control | Keys.X) },
+            { ShortcutKeysTag.PrintMacAddress, new ShortcutKey("Print MAC address", Keys.Control | Keys.P) },
         };
 
         public class ShortcutKey

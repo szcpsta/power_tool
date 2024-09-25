@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -104,6 +106,43 @@ namespace Pt5Viewer
             {
                 Dispose();
                 Close();
+
+                return true;
+            }
+            else if (keyData == PreferencesControl.ShortcutKeys[ShortcutKeysTag.PrintMacAddress])
+            {
+                using (Process process = new Process())
+                {
+                    process.StartInfo.FileName = "ipconfig.exe";
+                    process.StartInfo.Arguments = "/all";
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.UseShellExecute = false;
+                    process.Start();
+
+                    try
+                    {
+                        using (StreamReader bufferRdr = process.StandardOutput)
+                        {
+                            string line;
+                            string macPattern = @"([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})";
+
+                            while ((line = bufferRdr.ReadLine()) != null)
+                            {
+                                Match match = Regex.Match(line, macPattern, RegexOptions.IgnoreCase);
+                                if (match.Success == true)
+                                {
+                                    Console.WriteLine(match.Value);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e.Message);
+                        return true;
+                    }
+                }
 
                 return true;
             }

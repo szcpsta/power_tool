@@ -71,5 +71,6 @@ namespace Pt5Viewer.Configuration.Preferences
     public enum ShortcutKeysTag
     {
         Close,
+        PrintMacAddress,
     }
 }
